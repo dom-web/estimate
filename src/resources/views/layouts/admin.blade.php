@@ -60,11 +60,11 @@
         <div class="container-fluid h-100">
             <div class="row h-100">
                 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse h-100">
-                    <h1 class="mt-3 text-center">EstiMeister</h1>
+                    <h1 class="mt-3 text-center"><a href="{{ url('/') }}">EstiMeister</a></h1>
                     <div class="position-sticky pt-md-5">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="#">
+                                <a class="nav-link active" aria-current="page" href="{{ url('/admin/') }}">
                                     <span class="ml-2">設定</span>
                                 </a>
                             </li>
@@ -78,7 +78,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ url('/admin/items/create') }}">
                                     <span class="ml-2">アイテム管理</span>
                                 </a>
                                 <ul class="ps-3">

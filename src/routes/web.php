@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\ItemController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -13,4 +13,6 @@ Route::prefix('admin')->group(function() {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/store', [App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
     Route::post('/update', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');
+    Route::resource('/items', ItemController::class);
 });
+

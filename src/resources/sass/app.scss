@@ -31,7 +31,8 @@ html {
 .btn-secondary {
     color: #fff;
 }
-.sidebar h1 {
+.sidebar h1 a {
+    text-decoration: none;
     color: #fff;
     font-size: 1.6rem;
 }
