@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\CustomerController;
 Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -14,5 +15,6 @@ Route::prefix('admin')->group(function() {
     Route::post('/store', [App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
     Route::post('/update', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');
     Route::resource('/items', ItemController::class);
+    Route::resource('/customers', CustomerController::class);
 });
 

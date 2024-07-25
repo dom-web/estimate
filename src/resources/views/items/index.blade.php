@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-10">
                 <div class="row mb-4">
-                    <div class="col-md-5">
+                    <div class="col-md-5 mb-sm-4">
                         <select id="category-filter" class="form-select">
                             <option value="">すべてのカテゴリー</option>
                             <option value="プロジェクト計画">プロジェクト計画</option>
@@ -20,6 +20,7 @@
                             <option value="ドキュメント">ドキュメント</option>
                         </select>
                     </div>
+                    <div class="col-lg-1 col-md-2 offset-lg-6 offset-md-5 text-end"><a href="{{ url('/admin/items/create') }}" class="btn btn-primary">＋</a></div>
                 </div>
                 <table class="table table-bordered" id="items-table">
                     <thead>
