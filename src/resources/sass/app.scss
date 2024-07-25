@@ -21,7 +21,9 @@ html {
         background: $gray;
     }
 }
-
+.wrap {
+    min-height: 100%;
+}
 .navbar-brand {
     color: $primary;
     font-weight: bold;
@@ -48,4 +50,8 @@ html {
     display: inline-block;
     text-decoration: none;
     padding: 0.4rem 1rem;
+}
+
+.admin_main {
+    min-height: calc(100vh - 50px);
 }

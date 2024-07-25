@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('risk_low');
             $table->integer('risk_mid');
             $table->integer('risk_high');
-            $table->string('memo');
+            $table->text('memo')->nullable();
             $table->timestamps();
         });
     }

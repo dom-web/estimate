@@ -19,7 +19,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body class="body-admin">
-    <div id="app" class="h-100">
+    <div id="app" class="wrap">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -59,7 +59,7 @@
         </nav>
         <div class="container-fluid h-100">
             <div class="row h-100">
-                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse h-100">
+                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
                     <h1 class="mt-3 text-center"><a href="{{ url('/') }}">EstiMeister</a></h1>
                     <div class="position-sticky pt-md-5">
                         <ul class="nav flex-column">
@@ -78,12 +78,12 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/items/create') }}">
+                                <a class="nav-link" href="{{ url('/admin/items') }}">
                                     <span class="ml-2">アイテム管理</span>
                                 </a>
                                 <ul class="ps-3">
-                                    <li><a href="" class="nav-sub">アイテム一覧</a></li>
-                                    <li><a href="" class="nav-sub">アイテム追加</a></li>
+                                    <li><a href="{{ url('/admin/items') }}" class="nav-sub">アイテム一覧</a></li>
+                                    <li><a href="{{ url('/admin/items/create') }}" class="nav-sub">アイテム追加</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -97,11 +97,12 @@
                         </ul>
                     </div>
                 </nav>
-                <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
+                <main class="admin_main col-md-9 ml-sm-auto col-lg-10 px-md-4 py-4">
                     @yield('content')
                 </main>
             </div>
         </div>
     </div>
+    @yield('scripts')
 </body>
 </html>
