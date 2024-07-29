@@ -55,3 +55,31 @@ html {
 .admin_main {
     min-height: calc(100vh - 50px);
 }
+
+#pagination {
+    .page-number {
+        padding: 0.3rem 0.8rem;
+        margin: 0 0.3rem;
+        color: inherit;
+        text-decoration: none;
+        transition: 0.3s ease-in;
+
+        &.active,
+        &:hover {
+            background: $primary;
+            border-radius: 5px;
+            color: #fff;
+        }
+    }
+}
+
+.truncate {
+    max-width: 22rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.bg-gray {
+    background-color: #dbdbdb !important;
+}

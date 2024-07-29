@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('kana');
             $table->string('zip',10);
             $table->text('address');
-            $table->string('tel',10);
+            $table->string('tel',20);
             $table->text('memo')->nullable();
             $table->timestamps();
         });

@@ -69,12 +69,12 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ url('/admin/customers') }}">
                                     <span class="ml-2">顧客管理</span>
                                 </a>
                                 <ul class="ps-3">
-                                    <li><a href="" class="nav-sub">顧客一覧</a></li>
-                                    <li><a href="" class="nav-sub">顧客追加</a></li>
+                                    <li><a href="{{ url('/admin/customers') }}" class="nav-sub">顧客一覧</a></li>
+                                    <li><a href="{{ url('/admin/customers/create') }}" class="nav-sub">顧客追加</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item">
