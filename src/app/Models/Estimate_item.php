@@ -10,7 +10,7 @@ class Estimate_item extends Model
     use HasFactory;
     protected $fillable = [
         'estimate_id','version','item_id',
-        'diff','acc','cost','risk',
+        'diff','acc','cost','risk','effort',
     ];
     protected $primaryKey = null;
     public $incrementing = false;

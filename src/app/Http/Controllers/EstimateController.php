@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Estimate;
 use App\Models\Estimate_item;
 use App\Models\Item;
+use App\Models\Customer;
 
 
 class EstimateController extends Controller
@@ -23,7 +24,8 @@ class EstimateController extends Controller
      */
     public function create()
     {
-        return view('home');
+        $customers = Customer::all();
+        return view('home', compact('customers'));
     }
 
     /**
@@ -47,6 +49,7 @@ class EstimateController extends Controller
                 'acc' => $itemData['acc'],
                 'cost' => $itemData['cost'],
                 'risk' => $itemData['risk'],
+                'effort' => $itemData['effort'],
             ]);
         }
 
@@ -107,6 +110,7 @@ class EstimateController extends Controller
                 'acc' => $itemData['acc'],
                 'cost' => $itemData['cost'],
                 'risk' => $itemData['risk'],
+                'effort' => $itemData['effort'],
             ]);
         }
 

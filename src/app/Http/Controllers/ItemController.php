@@ -76,9 +76,10 @@ class ItemController extends Controller
     public function show(Request $request)
     {
         $id = $request->get('id');
+        $idx = $request->get('idx');
         $items = Item::all();
         $selected = Item::findOrFail($id);
-        return view('partials.item-details', compact('selected','items'));
+        return view('partials.item-details', compact('selected','items','idx'));
     }
 
     public function getItemBox()
