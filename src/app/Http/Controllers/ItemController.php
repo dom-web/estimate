@@ -66,4 +66,24 @@ class ItemController extends Controller
         return redirect()->route('items.index')
                         ->with('success', 'Item deleted successfully.');
     }
+
+    public function select()
+    {
+        $items = Item::all();
+        return view('partials.item-options', compact('items'));
+    }
+
+    public function show(Request $request)
+    {
+        $id = $request->get('id');
+        $items = Item::all();
+        $selected = Item::findOrFail($id);
+        return view('partials.item-details', compact('selected','items'));
+    }
+
+    public function getItemBox()
+    {
+        $items = Item::all();
+        return view('partials.item-box', compact('items'));
+    }
 }
