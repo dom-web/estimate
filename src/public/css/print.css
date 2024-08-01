@@ -1,0 +1,41 @@
+@media print {
+    body {
+        font-size: 0.8rem;
+    }
+    .container {
+        max-width: none;
+        width: 100%;
+        padding: 0;
+    }
+    .navbar {
+        display: none;
+    }
+    .py-4 {
+        padding: 0 !important;
+    }
+    .card {
+        border: none;
+        filter: none;
+
+    }
+    .card-body {
+        min-height: 140vw;
+        position: relative;
+        padding-bottom: 5rem;
+    }
+    .logo-estimate {
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 0;
+    }
+    .col-3 {
+        width: 35%;
+    }
+    .offset-6 {
+        margin-left: 30%;
+    }
+    .w-10 {
+        width: 12% !important;
+    }
+}

@@ -14,4 +14,8 @@ class Estimate_item extends Model
     ];
     protected $primaryKey = null;
     public $incrementing = false;
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id');
+    }
 }
