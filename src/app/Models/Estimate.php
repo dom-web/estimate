@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Estimate extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
         'name','customer_id','person',
         'issue_date','limit_date',
@@ -27,6 +28,12 @@ class Estimate extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    // User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     // Itemsとのリレーション

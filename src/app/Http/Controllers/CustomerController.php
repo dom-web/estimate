@@ -4,12 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Estimate;
 
 class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = Customer::all();
+        $customers = Customer::all()->map(function ($customer) {
+            $estimatesCount = Estimate::where('customer_id', $customer->id)->count();
+            $orderedEstimatesCount = Estimate::where('customer_id', $customer->id)->where('ordered', true)->count();
+
+            return [
+                'customer' => $customer,
+                'estimates_count' => $estimatesCount,
+                'ordered_estimates_count' => $orderedEstimatesCount,
+                'order_rate' => $estimatesCount > 0 ? ($orderedEstimatesCount / $estimatesCount) * 100 : 0
+            ];
+        });
+
         return view('customers.index', compact('customers'));
     }
 

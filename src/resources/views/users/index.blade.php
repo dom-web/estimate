@@ -18,11 +18,11 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr class="align-middle">
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td></td>
+                                    <td>{{ $user['user']->name }}</td>
+                                    <td>{{ $user['user']->email }}</td>
+                                    <td class="text-end">{{$user['estimates_count']}}</td>
                                     <td class="text-center">
-                                        <form action="{{ route('users.destroy', $user->id) }}" method="POST"
+                                        <form action="{{ route('users.destroy', $user['user']->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')

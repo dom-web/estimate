@@ -11,7 +11,7 @@ class ItemController extends Controller
     // 一覧表示
     public function index()
     {
-        $items = Item::all();
+        $items = Item::orderBy('category', 'asc')->get();
         return view('items.index', compact('items'));
     }
 

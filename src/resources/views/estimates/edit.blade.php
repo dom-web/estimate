@@ -6,13 +6,28 @@
                 <form method="POST" action="{{ route('estimate.update', $estimate->id) }}">
                     @csrf
                     @method('PUT')
-                    <input type="checkbox" name="issued" id="issued" value="1">
-                    <label for="issued">発行済</label>
+                    <div class="d-flex gap-4 mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="issued" id="issued"
+                                value="1"{{ $estimate->issued ? ' checked' : '' }} onchange="submit(this.form)">
+                            <label class="form-check-label" for="issued">発行済</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="ordered" id="ordered"
+                                value="1"{{ $estimate->ordered ? ' checked' : '' }} onchange="submit(this.form)">
+                            <label class="form-check-label" for="ordered">受注済</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="on_hold" id="on_hold"
+                                value="1"{{ $estimate->on_hold ? ' checked' : '' }} onchange="submit(this.form)">
+                            <label class="form-check-label" for="on_hold">保留</label>
+                        </div>
+                    </div>
                     <div class="row align-items-center mb-4">
                         <label for="customer_id" class="col-md-2">お客様</label>
                         <div class="col-md-4">
                             {{ $customer->name }}
-                            <input type="hidden" name="customer_id" value="{{$estimate->customer_id}}">
+                            <input type="hidden" name="customer_id" value="{{ $estimate->customer_id }}">
                         </div>
                         <label for="person" class="col-md-2">部署／担当者</label>
                         <div class="col-md-4"><input type="text" id="person" name="person" class="form-control"
@@ -21,7 +36,7 @@
                     <div class="row align-items-center mb-4">
                         <label for="issue_date" class="col-md-2">発行日</label>
                         <div class="col-md-4"><input type="date" id="issue_date" name="issue_date" class="form-control"
-                                required value="{{ $estimate->issue_date }}"></div>
+                                required value="<?php echo date('Y-m-d'); ?>"></div>
                         <label for="limit_date" class="col-md-2">有効期限</label>
                         <div class="col-md-4"><input type="date" id="limit_date" name="limit_date" class="form-control"
                                 required value="{{ $estimate->limit_date->format('Y-m-d') }}"></div>
@@ -34,71 +49,114 @@
 
                     <div id="items-container">
                         @foreach ($items as $item)
-                        <div class="item-box card mt-4">
-                            <div class="card-body">
-                                <input type="hidden" class="item-input" data-name="item_id" value="{{$item->item_id}}">
-                                <div class="row align-items-center mb-4">
-                                    <h5 class="col-md-7 mb-0">{{$item-> item -> name}}</h5>
-                                    <div class="col-md-2"><input type="number" class="item-input form-control"
-                                            data-name="effort" value="{{$item->effort}}"></div>
-                                    <div class="col-md-3 fs-3 fw-bold text-end">￥<span class="item_total">{{$item-> diff * (1 + $item -> acc / 100) * (1 + $item -> cost / 100) * (1 + $item -> risk / 100) * $item->effort}}</span></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <select class="item-input form-select" data-name="diff">
-                                            <option value="{{$item->item->diff_low}}"{{$item -> diff == $item->item->diff_low ? ' selected' : ''}}>低難易度（{{$item->item->diff_low}}円）</option>
-                                            <option value="{{$item->item->diff_mid}}"{{$item -> diff == $item->item->diff_mid ? ' selected' : ''}}>中難易度（{{$item->item->diff_mid}}円）</option>
-                                            <option value="{{$item->item->diff_high}}"{{$item -> diff == $item->item->diff_high ? ' selected' : ''}}>高難易度（{{$item->item->diff_high}}円）</option>
-                                        </select>
+                            <div class="item-box card mt-4">
+                                <div class="card-body">
+                                    <input type="hidden" class="item-input" data-name="item_id"
+                                        value="{{ $item->item_id }}">
+                                    <div class="row align-items-center mb-4">
+                                        <h5 class="col-md-7 mb-0">{{ $item->item->name }}</h5>
+                                        <div class="col-md-2"><input type="number" class="item-input form-control"
+                                                data-name="effort" value="{{ $item->effort }}"></div>
+                                        <div class="col-md-3 fs-3 fw-bold text-end">￥<span
+                                                class="item_total">{{ $item->diff * (1 + $item->acc / 100) * (1 + $item->cost / 100) * (1 + $item->risk / 100) * $item->effort }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <select class="item-input form-select" data-name="diff">
+                                                <option
+                                                    value="{{ $item->item->diff_low }}"{{ $item->diff == $item->item->diff_low ? ' selected' : '' }}>
+                                                    低難易度（{{ $item->item->diff_low }}円）</option>
+                                                <option
+                                                    value="{{ $item->item->diff_mid }}"{{ $item->diff == $item->item->diff_mid ? ' selected' : '' }}>
+                                                    中難易度（{{ $item->item->diff_mid }}円）</option>
+                                                <option
+                                                    value="{{ $item->item->diff_high }}"{{ $item->diff == $item->item->diff_high ? ' selected' : '' }}>
+                                                    高難易度（{{ $item->item->diff_high }}円）</option>
+                                            </select>
 
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="item-input form-select" data-name="acc">
+                                                <option
+                                                    value="{{ $item->item->acc_low }}"{{ $item->acc == $item->item->acc_low ? ' selected' : '' }}>
+                                                    低精度（{{ $item->item->acc_low }}％）</option>
+                                                <option
+                                                    value="{{ $item->item->acc_mid }}"{{ $item->acc == $item->item->acc_mid ? ' selected' : '' }}>
+                                                    中精度（{{ $item->item->acc_mid }}％）</option>
+                                                <option
+                                                    value="{{ $item->item->acc_high }}"{{ $item->acc == $item->item->acc_high ? ' selected' : '' }}>
+                                                    高精度（{{ $item->item->acc_high }}％）</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="item-input form-select" data-name="cost">
+                                                <option
+                                                    value="{{ $item->item->cost_low }}"{{ $item->cost == $item->item->cost_low ? ' selected' : '' }}>
+                                                    短期（{{ $item->item->cost_low }}％）</option>
+                                                <option
+                                                    value="{{ $item->item->cost_mid }}"{{ $item->cost == $item->item->cost_mid ? ' selected' : '' }}>
+                                                    中期（{{ $item->item->cost_mid }}％）</option>
+                                                <option
+                                                    value="{{ $item->item->cost_high }}{{ $item->cost == $item->item->cost_high ? ' selected' : '' }}">
+                                                    長期（{{ $item->item->cost_high }}％）</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <select class="item-input form-select" data-name="risk">
+                                                <option
+                                                    value="{{ $item->item->risk_low }}"{{ $item->risk == $item->item->risk_low ? ' selected' : '' }}>
+                                                    低リスク（{{ $item->item->risk_low }}％）</option>
+                                                <option
+                                                    value="{{ $item->item->risk_mid }}"{{ $item->risk == $item->item->risk_mid ? ' selected' : '' }}>
+                                                    中リスク（{{ $item->item->risk_mid }}％）</option>
+                                                <option
+                                                    value="{{ $item->item->risk_high }}"{{ $item->risk == $item->item->risk_high ? ' selected' : '' }}>
+                                                    高リスク（{{ $item->item->risk_high }}％）</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="col-md-3">
-                                        <select class="item-input form-select" data-name="acc">
-                                            <option value="{{$item->item->acc_low}}"{{$item -> acc == $item->item->acc_low ? ' selected' : ''}}>低精度（{{$item->item->acc_low}}％）</option>
-                                            <option value="{{$item->item->acc_mid}}"{{$item -> acc == $item->item->acc_mid ? ' selected' : ''}}>中精度（{{$item->item->acc_mid}}％）</option>
-                                            <option value="{{$item->item->acc_high}}"{{$item -> acc == $item->item->acc_high ? ' selected' : ''}}>高精度（{{$item->item->acc_high}}％）</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="item-input form-select" data-name="cost">
-                                            <option value="{{$item->item->cost_low}}"{{$item -> cost == $item->item->cost_low ? ' selected' : ""}}>短期（{{$item->item->cost_low}}％）</option>
-                                            <option value="{{$item->item->cost_mid}}"{{$item -> cost == $item->item->cost_mid ? ' selected' : ""}}>中期（{{$item->item->cost_mid}}％）</option>
-                                            <option value="{{$item->item->cost_high}}{{$item -> cost == $item->item->cost_high ? ' selected' : ""}}">長期（{{$item->item->cost_high}}％）</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="item-input form-select" data-name="risk">
-                                            <option value="{{$item->item->risk_low}}"{{$item -> risk == $item->item->risk_low ? ' selected' : ""}}>低リスク（{{$item->item->risk_low}}％）</option>
-                                            <option value="{{$item->item->risk_mid}}"{{$item -> risk == $item->item->risk_mid ? ' selected' : ""}}>中リスク（{{$item->item->risk_mid}}％）</option>
-                                            <option value="{{$item->item->risk_high}}"{{$item -> risk == $item->item->risk_high ? ' selected' : ""}}>高リスク（{{$item->item->risk_high}}％）</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <button class="remove-button btn-close" aria-label="Close"></button>
+                                    <button class="remove-button btn-close" aria-label="Close"></button>
 
+                                </div>
                             </div>
-                        </div>
                         @endforeach
                     </div>
                     <div class="text-center my-4">
                         <button type="button" id="add-item" hx-get="/item-box" hx-trigger="click"
                             hx-target="#items-container" hx-swap="beforeend" class="btn btn-sm btn-secondary">+</button>
                     </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-5">
+                                <label for="memo" class="mb-2">備考・メモ:</label>
+                                <textarea id="memo" name="memo" class="form-control">{{ $estimate->memo }}</textarea>
+                            </div>
+                            <div>
 
-                    <div>
-                        <label for="memo">Memo:</label>
-                        <textarea id="memo" name="memo" class="form-control">{{ $estimate->memo }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <div id="summary" class="col-4">
+                                    <div class="d-flex justify-content-between"><small class="fs-5">小計</small><span
+                                            id="subtotal" class="fs-5">0円</span></div>
+                                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><small
+                                            class="fs-5">消費税</small><span id="tax" class="fs-5">0円</span></div>
+                                    <div class="d-flex justify-content-between"><small
+                                            class="fs-4 fw-bold">合計</small><span id="total"
+                                            class="fw-bold fs-4">0円</span></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <input type="hidden" id="user_id" name="user_id" required value="{{ Auth::user()->id }}">
+                    <input type="hidden" id="user_id" name="user_id" required value="{{ Auth::user()->id }}">
+                    <div class="mt-5 row">
+                        <div class="col-3 offset-3 d-grid">
+                            <a href="{{ route('estimate.show', $estimate->id) }}" class="btn btn-secondary btn-lg">見積に戻る</a>
+                        </div>
+                        <div class="col-3 d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">この内容で確定</button>
+                        </div>
                     </div>
-                    <div id="summary">
-                        <div id="subtotal">小計: 0円</div>
-                        <div id="tax">消費税: 0円</div>
-                        <div id="total">合計: 0円</div>
-                    </div>
-                    <a href="{{ url('/estimate-list') }}" class="btn btn-secondary">見積一覧</a>
-                    <button type="submit" class="btn btn-primary">編集</button>
                 </form>
             </div>
 
@@ -145,6 +203,7 @@
         $(document).ready(function() {
             updateIndices();
             updateOverallTotal();
+
             function calculateTotal(item) {
                 // 必要な値を取得
                 var effort = parseFloat(item.find('input[data-name="effort"]').val()) || 0;

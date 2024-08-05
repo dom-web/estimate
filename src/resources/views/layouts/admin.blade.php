@@ -87,11 +87,11 @@
                                 </ul>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="{{ url('/admin/users') }}">
                                     <span class="ml-2">ユーザ管理</span>
                                 </a>
                                 <ul class="ps-3">
-                                    <li><a href="" class="nav-sub">ユーザ一覧</a></li>
+                                    <li><a href="{{ url('/admin/users') }}" class="nav-sub">ユーザ一覧</a></li>
                                 </ul>
                             </li>
                         </ul>

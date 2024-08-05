@@ -7,19 +7,30 @@ use App\Models\Estimate;
 use App\Models\Estimate_item;
 use App\Models\Item;
 use App\Models\Customer;
-
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 class EstimateController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
 {
     // 見積もりを取得
-    $estimates = Estimate::with('customer')->get();
+    $estimates = Estimate::with('customer','user')->get();
+    $users = User::All();
 
     // 最新バージョンの見積もりアイテムを取得し、見積もりIDごとにグループ化
-    $latestEstimateItems = Estimate_item::select('estimate_id', 'diff', 'effort', 'acc', 'cost', 'risk')
+    $latestEstimateItems = Estimate_item::select('estimate_id', 'diff', 'effort', 'acc', 'cost', 'risk','version')
         ->whereIn('version', function($query) {
             $query->selectRaw('MAX(version)')
                 ->from('estimate_items')
@@ -36,12 +47,14 @@ class EstimateController extends Controller
             $adjustedCost = $baseCost * ($item->acc / 100 + 1) * ($item->cost / 100 + 1) * ($item->risk / 100 + 1);
             return $adjustedCost;
         });
+        $maxVersion = $items->max('version');
         $estimate->item = $items;
         $estimate->total_cost = $totalCost;
+        $estimate->max_version = $maxVersion;
         return $estimate;
     });
 
-    return view('estimates.index', compact('estimates'));
+    return view('estimates.index', compact('estimates','users'));
 }
 
     /**
@@ -58,14 +71,40 @@ class EstimateController extends Controller
      */
     public function store(Request $request)
     {
-        // 見積もりの保存
+        $items = $request->get('items',[]);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'customer_id' => 'required|integer',
+            'person' => 'required|string|max:255',
+            'issue_date' => 'required|date',
+            'limit_date' => 'required|date',
+            'memo' => 'required|string',
+            'user_id' => 'required|integer',
+            'issued' => 'required|boolean',
+            'ordered' => 'required|boolean',
+            'on_hold' => 'required|boolean',
+            'items' => 'required|array|min:1',
+            'items.*.item_id' => 'required|integer',
+            'items.*.diff' => 'required|numeric',
+            'items.*.acc' => 'required|numeric',
+            'items.*.cost' => 'required|numeric',
+            'items.*.risk' => 'required|numeric',
+            'items.*.effort' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        // バリデーションが成功した場合の処理
         $estimate = Estimate::create($request->only([
             'name', 'customer_id', 'person',
             'issue_date', 'limit_date', 'memo', 'user_id',
             'issued', 'ordered', 'on_hold'
         ]));
 
-        // 見積もりアイテムの保存
         foreach ($request->items as $itemData) {
             Estimate_item::create([
                 'estimate_id' => $estimate->id,
@@ -114,9 +153,9 @@ class EstimateController extends Controller
             'issued', 'ordered', 'on_hold'
         ]);
         // デフォルト値を設定
-        $data['issued'] = $request->has('issued') ? $request->issued : false;
-        $data['ordered'] = $request->has('ordered') ? $request->ordered : false;
-        $data['on_hold'] = $request->has('on_hold') ? $request->on_hold : false;
+        $data['issued'] = $request->has('issued') ? $request->issued : 0;
+        $data['ordered'] = $request->has('ordered') ? $request->ordered : 0;
+        $data['on_hold'] = $request->has('on_hold') ? $request->on_hold : 0;
         $estimate->update($data);
 
         // 現在の最新バージョンを取得
@@ -165,7 +204,11 @@ class EstimateController extends Controller
     public function statusUpdate(Request $request, string $id)
     {
         $estimate = Estimate::findOrFail($id);
-        $estimate->update($request->only(['issued', 'ordered', 'on_hold']));
+        $data = $request->only(['issued', 'ordered', 'on_hold']);
+        $data['issued'] = $request->has('issued') ? $request->issued : 0;
+        $data['ordered'] = $request->has('ordered') ? $request->ordered : 0;
+        $data['on_hold'] = $request->has('on_hold') ? $request->on_hold : 0;
+        $estimate->update($data);
 
         return redirect()->route('estimate.show', $id);
     }
@@ -176,6 +219,6 @@ class EstimateController extends Controller
     {
         $estimate = Estimate::findOrFail($id);
         $estimate->delete(); // ここで論理削除を実行
-        return redirect()->route('estimate.index');
+        return redirect()->route('estimates.index')->with('success', '見積が削除されました。');
     }
 }

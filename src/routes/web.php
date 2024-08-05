@@ -5,8 +5,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EstimateController;
-use Illuminate\Support\Facades\Auth;
-
+use App\Http\Controllers\AdminController;
 
 Auth::routes();
 
@@ -23,12 +22,9 @@ Route::get('/estimates/{id}/edit', [EstimateController::class, 'edit'])->name('e
 Route::put('/estimates/{id}', [EstimateController::class, 'update'])->name('estimate.update');
 Route::put('/estimates/{id}/status', [EstimateController::class, 'statusUpdate'])->name('estimate.status.update');
 Route::get('/estimate-list', [EstimateController::class, 'index'])->name('estimates.index');
+Route::delete('/estimates/{id}', [EstimateController::class, 'destroy'])->name('estimate.destroy');
 
-
-Route::prefix('admin')->group(function() {
-    Route::get('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'showLoginForm'])->name('admin.login');
-    Route::post('/login', [App\Http\Controllers\Auth\AdminLoginController::class, 'login'])->name('admin.login.submit');
-    Route::post('/logout', [App\Http\Controllers\Auth\AdminLoginController::class, 'logout'])->name('admin.logout');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin.access']], function () {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/store', [App\Http\Controllers\AdminController::class, 'store'])->name('admin.store');
     Route::post('/update', [App\Http\Controllers\AdminController::class, 'update'])->name('admin.update');

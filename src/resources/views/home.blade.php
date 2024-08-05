@@ -4,6 +4,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
+                @if(session('error'))
+                <div class="alert alert-danger">{{session('error')}}</div>
+                @endif
                 <div class="d-grid gap-2 col-4 mb-4">
                     <a href="{{ url('/estimate-list') }}" class="btn btn-primary btn-lg">見積一覧</a>
                 </div>
@@ -17,58 +20,65 @@
                         <div class="col-md-4">
                             <select name="customer_id" id="customer_id" class="form-select">
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}">{{ $customer->name }}</option>
+                                    <option value="{{ $customer->id }}" {{ old('customer_id') == $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
                                 @endforeach
                             </select>
+
                         </div>
                         <label for="person" class="col-md-2">部署／担当者</label>
-                        <div class="col-md-4"><input type="text" id="person" name="person" class="form-control"
-                                required></div>
+                        <div class="col-md-4">
+                            <input type="text" id="person" name="person" class="form-control" required value="{{ old('person') }}">
+
+                        </div>
                     </div>
                     <div class="row align-items-center mb-4">
                         <label for="issue_date" class="col-md-2">発行日</label>
                         <div class="col-md-4"><input type="date" id="issue_date" name="issue_date" class="form-control"
-                                required value="<?php echo date('Y-m-d');?>"></div>
+                                required value="{{old('issue_date', date('Y-m-d'))}}"></div>
                         <label for="limit_date" class="col-md-2">有効期限</label>
                         <div class="col-md-4"><input type="date" id="limit_date" name="limit_date" class="form-control"
-                                required value="<?php echo date('Y-m-d',strtotime("+30 day"));?>"></div>
+                                required value="{{old('limit_date',date('Y-m-d', strtotime('+30 day')))}}"></div>
                     </div>
                     <div class="row align-items-center">
                         <label for="name" class="col-2">件名</label>
-                        <div class="col-10"><input type="text" class="form-control" id="name" name="name"
-                                required></div>
+                        <div class="col-10"><input type="text" class="form-control" id="name" name="name" required value="{{old('name')}}"></div>
                     </div>
-
+                    @if ($errors->has('items'))
+                        <div class="alert alert-danger mt-4">{{ $errors->first('items') }}</div>
+                    @endif
                     <div id="items-container"></div>
                     <div class="text-center my-4">
-                        <button type="button" id="add-item" hx-get="/item-box" hx-trigger="click" hx-target="#items-container"
-                        hx-swap="beforeend" class="btn btn-sm btn-secondary">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
-                            <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"></path>
-                        </svg>
+                        <button type="button" id="add-item" hx-get="/item-box" hx-trigger="click"
+                            hx-target="#items-container" hx-swap="beforeend" class="btn btn-sm btn-secondary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-plus" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z">
+                                </path>
+                            </svg>
                         </button>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-5">
                                 <label for="memo" class="mb-2">備考・メモ</label>
-                                <textarea id="memo" name="memo" class="form-control"></textarea>
+                                <textarea id="memo" name="memo" class="form-control" required>{{old('memo')}}</textarea>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <div id="summary" class="col-4">
-                                    <div class="d-flex justify-content-between"><small class="fs-5">小計</small><span id="subtotal" class="fs-5">0円</span></div>
-                                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><small class="fs-5">消費税</small><span id="tax" class="fs-5">0円</span></div>
-                                    <div class="d-flex justify-content-between"><small class="fs-4 fw-bold">合計</small><span id="total" class="fw-bold fs-4">0円</span></div>
+                                    <div class="d-flex justify-content-between"><small class="fs-5">小計</small><span
+                                            id="subtotal" class="fs-5">0円</span></div>
+                                    <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><small
+                                            class="fs-5">消費税</small><span id="tax" class="fs-5">0円</span></div>
+                                    <div class="d-flex justify-content-between"><small class="fs-4 fw-bold">合計</small><span
+                                            id="total" class="fw-bold fs-4">0円</span></div>
                                 </div>
                             </div>
 
+                        </div>
                     </div>
-                    </div>
-
-
-
                     <input type="hidden" id="user_id" name="user_id" required value="{{ Auth::user()->id }}">
-                    <button type="submit">Create Estimate</button>
+                    <div class="text-center mt-5"><button type="submit" class="btn btn-primary btn-lg">確定</button></div>
                 </form>
             </div>
         </div>

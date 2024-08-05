@@ -27,15 +27,17 @@
                         <tbody>
                             @foreach ($customers as $customer)
                                 <tr class="align-middle">
-                                    <td>{{ $customer->name }}</td>
-                                    <td class="truncate">{{ $customer->address }}</td>
-                                    <td>{{ $customer->tel }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-center"><a href="{{ route('customers.edit', $customer->id) }}"
+                                    <td>{{ $customer['customer']->name }}</td>
+                                    <td class="truncate">{{ $customer['customer']->address }}</td>
+                                    <td>{{ $customer['customer']->tel }}</td>
+                                    <td class="text-end">{{ $customer['estimates_count'] }}件</td>
+                                    <td class="text-end">
+                                        {{number_format($customer['order_rate'],2)}}%
+                                    </td>
+                                    <td class="text-center"><a href="{{ route('customers.edit', $customer['customer']->id) }}"
                                             class="btn btn-primary">編集</a></td>
                                     <td class="text-center">
-                                        <form action="{{ route('customers.destroy', $customer->id) }}" method="POST"
+                                        <form action="{{ route('customers.destroy', $customer['customer']->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
                                             @method('DELETE')

@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Estimate;
 
 class UserController extends Controller
 {
      // 一覧表示
     public function index()
     {
-        $users = User::all();
+        $users = User::all()->map(function($user){
+            $estimatesCount = Estimate::where('user_id', $user->id)->count();
+
+            return [
+                'user' => $user,
+                'estimates_count' => $estimatesCount,
+            ];
+        });
         return view('users.index', compact('users'));
+
     }
 
 
