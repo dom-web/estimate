@@ -34,7 +34,7 @@
                             <div class="form-group">
                                 <label for="diff_low">低難易度単価</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="diff_low" name="diff_low" value="{{ old('diff_low', $item->diff_low) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="diff_low" name="diff_low" value="{{ old('diff_low', $item->diff_low) }}" required></div>
                                     <span class="col-2">円</span>
                                 </div>
                             </div>
@@ -43,7 +43,7 @@
                             <div class="form-group">
                                 <label for="diff_mid">中難易度単価</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="diff_mid" name="diff_mid" value="{{ old('diff_mid', $item->diff_mid) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="diff_mid" name="diff_mid" value="{{ old('diff_mid', $item->diff_mid) }}" required></div>
                                     <span class="col-2">円</span>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                             <div class="form-group">
                                 <label for="diff_high">高難易度単価</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="diff_high" name="diff_high" value="{{ old('diff_high', $item->diff_high) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="diff_high" name="diff_high" value="{{ old('diff_high', $item->diff_high) }}" required></div>
                                     <span class="col-2">円</span>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <label for="acc_low">低精度予備費</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="acc_low" name="acc_low" value="{{ old('acc_low', $item->acc_low) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="acc_low" name="acc_low" value="{{ old('acc_low', $item->acc_low) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -72,7 +72,7 @@
                             <div class="form-group">
                                 <label for="acc_mid">中精度予備費</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="acc_mid" name="acc_mid" value="{{ old('acc_mid', $item->acc_mid) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="acc_mid" name="acc_mid" value="{{ old('acc_mid', $item->acc_mid) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                             <div class="form-group">
                                 <label for="risk_high">高精度予備費</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="acc_high" name="acc_high" value="{{ old('acc_high', $item->acc_high) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="acc_high" name="acc_high" value="{{ old('acc_high', $item->acc_high) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <label for="cost_low">短期コスト</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="cost_low" name="cost_low" value="{{ old('cost_low', $item->cost_low) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="cost_low" name="cost_low" value="{{ old('cost_low', $item->cost_low) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -101,7 +101,7 @@
                             <div class="form-group">
                                 <label for="cost_mid">中期コスト</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="cost_mid" name="cost_mid" value="{{ old('cost_mid', $item->cost_mid) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="cost_mid" name="cost_mid" value="{{ old('cost_mid', $item->cost_mid) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                             <div class="form-group">
                                 <label for="cost_high">長期コスト</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="cost_high" name="cost_high" value="{{ old('cost_high', $item->cost_high) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="cost_high" name="cost_high" value="{{ old('cost_high', $item->cost_high) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                             <div class="form-group">
                                 <label for="risk_low">低リスクコスト</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="risk_low" name="risk_low" value="{{ old('risk_low', $item->risk_low) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="risk_low" name="risk_low" value="{{ old('risk_low', $item->risk_low) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                             <div class="form-group">
                                 <label for="risk_mid">中リスクコスト</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="risk_mid" name="risk_mid" value="{{ old('risk_mid', $item->risk_mid) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="risk_mid" name="risk_mid" value="{{ old('risk_mid', $item->risk_mid) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                             <div class="form-group">
                                 <label for="risk_high">高リスクコスト</label>
                                 <div class="row g-1 align-items-center">
-                                    <div class="col-10"><input type="number" class="form-control" id="risk_high" name="risk_high" value="{{ old('risk_high', $item->risk_high) }}"></div>
+                                    <div class="col-10"><input type="number" class="form-control" id="risk_high" name="risk_high" value="{{ old('risk_high', $item->risk_high) }}" required></div>
                                     <span class="col-2">%</span>
                                 </div>
                             </div>

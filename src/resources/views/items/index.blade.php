@@ -4,8 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="row mb-4">
-                    <div class="col-md-5 mb-sm-4">
+                <div class="row">
+                    <div class="col-md-5 mb-4">
                         <select id="category-filter" class="form-select">
                             <option value="">すべてのカテゴリー</option>
                             <option value="プロジェクト計画">プロジェクト計画</option>
@@ -20,21 +20,21 @@
                             <option value="ドキュメント">ドキュメント</option>
                         </select>
                     </div>
-                    <div class="col-lg-1 col-md-2 offset-lg-6 offset-md-5 text-end"><a href="{{ url('/admin/items/create') }}" class="btn btn-primary">＋</a></div>
+                    <div class="col-lg-1 col-md-2 offset-lg-6 offset-md-5 mb-4 text-end"><a href="{{ url('/admin/items/create') }}" class="btn btn-primary">＋</a></div>
                 </div>
                 <table class="table table-bordered" id="items-table">
                     <thead>
-                        <tr>
-                            <th>アイテム名</th>
-                            <th>カテゴリ</th>
-                            <th>中難易度単価</th>
-                            <th></th>
-                            <th></th>
+                        <tr class="text-center">
+                            <th class="bg-gray">アイテム名</th>
+                            <th class="bg-gray">カテゴリ</th>
+                            <th class="bg-gray">中難易度単価</th>
+                            <th class="bg-gray"></th>
+                            <th class="bg-gray"></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($items as $item)
-                            <tr class="align-middle">
+                            <tr class="align-middle{{$item->deleted_at ? ' deleted' : ''}}">
                                 <td>{{ $item->name }}</td>
                                 <td>
                                     @switch($item->category)
@@ -81,15 +81,23 @@
                                 </td>
                                 <td class="text-end">{{ number_format($item->diff_mid) }}円</td>
                                 <td class="text-center">
-                                    <a href="{{ route('items.edit', $item->id) }}" class="btn btn-primary">編集</a>
+                                    <a href="{{ route('items.edit', $item->id) }}" class="btn btn-primary{{$item->deleted_at ? ' disabled' : ''}}">編集</a>
                                 </td>
                                 <td class="text-center">
+                                    @if($item -> deleted_at)
+                                    <form action="{{ route('items.restore', $item->id) }}" method="POST"
+                                        style="display:inline;" onsubmit="return confirm('本当に復元しますか？');">
+                                        @csrf
+                                        <button type="submit" class="btn btn-info">復元</button>
+                                    </form>
+                                    @else
                                     <form action="{{ route('items.destroy', $item->id) }}" method="POST"
-                                        style="display:inline;">
+                                        style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-secondary">削除</button>
                                     </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach

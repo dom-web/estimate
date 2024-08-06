@@ -15,13 +15,13 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr class="text-center">
-                                <th>顧客名</th>
-                                <th>住所</th>
-                                <th>電話番号</th>
-                                <th>見積数</th>
-                                <th>受注率</th>
-                                <th></th>
-                                <th></th>
+                                <th class="bg-gray">顧客名</th>
+                                <th class="bg-gray">住所</th>
+                                <th class="bg-gray">電話番号</th>
+                                <th class="bg-gray">見積数</th>
+                                <th class="bg-gray">受注率</th>
+                                <th class="bg-gray"></th>
+                                <th class="bg-gray"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,7 +38,7 @@
                                             class="btn btn-primary">編集</a></td>
                                     <td class="text-center">
                                         <form action="{{ route('customers.destroy', $customer['customer']->id) }}" method="POST"
-                                            style="display:inline;">
+                                            style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-secondary">削除</button>

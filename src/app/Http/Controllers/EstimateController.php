@@ -44,7 +44,7 @@ class EstimateController extends Controller
         $items = $latestEstimateItems->get($estimate->id, collect());
         $totalCost = $items->sum(function($item) {
             $baseCost = $item->diff * $item->effort;
-            $adjustedCost = $baseCost * ($item->acc / 100 + 1) * ($item->cost / 100 + 1) * ($item->risk / 100 + 1);
+            $adjustedCost = $baseCost * ($item->acc / 100 + 1) * ($item->cost / 100 + 1) * ($item->risk / 100 + 1) * 1.1;
             return $adjustedCost;
         });
         $maxVersion = $items->max('version');
@@ -221,4 +221,25 @@ class EstimateController extends Controller
         $estimate->delete(); // ここで論理削除を実行
         return redirect()->route('estimates.index')->with('success', '見積が削除されました。');
     }
+
+    public function charts()
+    {
+    // 月ごとの受注数
+    $monthlyOrders = Estimate::selectRaw('YEAR(issue_date) as year, MONTH(issue_date) as month, COUNT(*) as count')
+        ->groupBy('year', 'month')
+        ->get();
+
+    // ステータスの分布
+    $statusDistribution = Estimate::selectRaw('issued, ordered, on_hold, COUNT(*) as count')
+        ->groupBy('issued', 'ordered', 'on_hold')
+        ->get();
+
+    // ユーザごとの受注率
+    $userOrderRates = User::withCount('estimates')->get();
+
+    // 顧客ごとの受注データ
+    $customerOrderData = Customer::withCount('estimates')->get();
+
+    return view('estimates.charts', compact('monthlyOrders', 'statusDistribution', 'userOrderRates', 'customerOrderData'));
+}
 }

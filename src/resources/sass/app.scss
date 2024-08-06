@@ -1,11 +1,11 @@
 // Fonts
-@import url('https://fonts.bunny.net/css?family=Nunito');
+@import url("https://fonts.bunny.net/css?family=Nunito");
 
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
-@import 'bootstrap/scss/bootstrap';
+@import "bootstrap/scss/bootstrap";
 
 html {
     height: 100%;
@@ -15,29 +15,33 @@ html {
         background: $bg_main;
     }
 
-    .body-admin
-    {
+    .body-admin {
         height: 100%;
-        background: $gray;
+        background: #efefef;
     }
 }
+
 .wrap {
     min-height: 100%;
 }
+
 .navbar-brand {
     color: $primary;
     font-weight: bold;
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-danger {
     color: #fff;
 }
+
 .sidebar h1 a {
     text-decoration: none;
     color: #fff;
     font-size: 1.6rem;
 }
+
 .sidebar .nav-link {
     color: #fff;
 }
@@ -45,6 +49,7 @@ html {
 .sidebar .nav-link.active {
     color: #eee;
 }
+
 .nav-sub {
     color: #fff;
     display: inline-block;
@@ -83,15 +88,18 @@ html {
 .bg-gray {
     background-color: #dbdbdb !important;
 }
+
 .w-10 {
     width: 10% !important;
 }
+
 .item-box {
     padding-left: 4rem;
 }
+
 .card {
-    background: #F3F4FF;
-    border-color: #FAFAFF;
+    background: #f3f4ff;
+    border-color: #fafaff;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
 }
 
@@ -108,7 +116,7 @@ html {
     font-weight: 900;
     font-size: 2rem;
     line-height: 100%;
-    color: #7A89F0;
+    color: #7a89f0;
     opacity: 0.3;
     padding: 2rem 0;
 }
@@ -116,6 +124,7 @@ html {
 .btn svg {
     vertical-align: sub;
 }
+
 .btn-estimate {
     display: block;
     padding-right: 2rem;
@@ -137,6 +146,7 @@ html {
         border-radius: 50%;
         margin-right: 0.2rem;
     }
+
     span {
         font-style: normal;
         display: inline-flex;
@@ -170,7 +180,18 @@ html {
         opacity: 0.7;
     }
 }
+
 .mixitup-control-active {
     background-color: #545b62;
-    border-color: #4e555b
+    border-color: #4e555b;
+}
+
+.deleted {
+    text-decoration: line-through;
+}
+
+a.disable {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.5;
 }

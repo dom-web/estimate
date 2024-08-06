@@ -11,7 +11,7 @@ class ItemController extends Controller
     // 一覧表示
     public function index()
     {
-        $items = Item::orderBy('category', 'asc')->get();
+        $items = Item::orderBy('category', 'asc')->withTrashed()->get();
         return view('items.index', compact('items'));
     }
 
@@ -66,6 +66,13 @@ class ItemController extends Controller
         return redirect()->route('items.index')
                         ->with('success', 'Item deleted successfully.');
     }
+    public function restore(Item $item)
+    {
+        $item::onlyTrashed()->whereNotNull('id')->restore();
+
+        return redirect()->route('items.index')
+                        ->with('success', 'Item restored successfully.');
+    }
 
     public function select()
     {
@@ -84,7 +91,8 @@ class ItemController extends Controller
 
     public function getItemBox()
     {
-        $items = Item::all();
+        $items = Item::orderBy('category', 'asc')->get();
+
         return view('partials.item-box', compact('items'));
     }
 }

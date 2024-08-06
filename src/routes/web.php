@@ -31,5 +31,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin.access']], fu
     Route::resource('/items', ItemController::class);
     Route::resource('/customers', CustomerController::class);
     Route::resource('/users', UserController::class);
+    Route::post('/items/restore', [App\Http\Controllers\ItemController::class, 'restore'])->name('items.restore');
+    Route::get('/charts',[EstimateController::class, 'charts'])->name('estimates.charts');
 });
 
