@@ -3,6 +3,9 @@
 @section('content')
     <div class="container">
         <div class="row justify-content-center">
+            @if (Auth::user()->avatar)
+                <img src="{{ Storage::url(Auth::user()->avatar) }}" alt="Avatar" style="width: 150px; height: 150px;">
+            @endif
             <div class="col-md-10">
                 @if(session('error'))
                 <div class="alert alert-danger">{{session('error')}}</div>

@@ -5,21 +5,17 @@
         <div class="row justify-content-center">
             <div class="col-xl-10">
                 <h1 class="mb-4">顧客一覧</h1>
-                <div class="row mb-4">
-                    <div class="col-md-5 mb-4">
-                        <input type="text" id="search" class="form-control" placeholder="顧客名で検索">
-                    </div>
-                    <div class="col-lg-1 col-md-2 offset-lg-6 offset-md-5 text-end"><a href="{{ route('customers.create') }}" class="btn btn-primary mb-3">＋</a></div>
+                <div class="row mb-4 justify-content-end">
+                    <div class="col-lg-1 col-md-2 text-end"><a href="{{ route('customers.create') }}" class="btn btn-primary mb-3">＋</a></div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="tbl-customer" style="min-width: 65rem;">
                         <thead>
                             <tr class="text-center">
                                 <th class="bg-gray">顧客名</th>
                                 <th class="bg-gray">住所</th>
-                                <th class="bg-gray">電話番号</th>
-                                <th class="bg-gray">見積数</th>
-                                <th class="bg-gray">受注率</th>
+                                <th class="bg-gray">Tel</th>
+                                <th class="bg-gray">見積</th>
+                                <th class="bg-gray">受注</th>
                                 <th class="bg-gray"></th>
                                 <th class="bg-gray"></th>
                             </tr>
@@ -28,29 +24,26 @@
                             @foreach ($customers as $customer)
                                 <tr class="align-middle">
                                     <td>{{ $customer['customer']->name }}</td>
-                                    <td class="truncate">{{ $customer['customer']->address }}</td>
+                                    <td>{{ $customer['customer']->address }}</td>
                                     <td>{{ $customer['customer']->tel }}</td>
                                     <td class="text-end">{{ $customer['estimates_count'] }}件</td>
                                     <td class="text-end">
-                                        {{number_format($customer['order_rate'],2)}}%
+                                        {{$customer['order_rate']}}%
                                     </td>
                                     <td class="text-center"><a href="{{ route('customers.edit', $customer['customer']->id) }}"
-                                            class="btn btn-primary">編集</a></td>
+                                            class="btn btn-primary btn-sm">編集</a></td>
                                     <td class="text-center">
                                         <form action="{{ route('customers.destroy', $customer['customer']->id) }}" method="POST"
                                             style="display:inline;" onsubmit="return confirm('本当に削除しますか？');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-secondary">削除</button>
+                                            <button type="submit" class="btn btn-secondary btn-sm">削除</button>
                                         </form>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-                <!-- ページネーション -->
-                <div id="pagination" class="d-flex justify-content-center"></div>
             </div>
         </div>
     </div>
@@ -58,67 +51,47 @@
 
 @section('scripts')
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
-            var rowsPerPage = 10;
-            var rows = $('tbody tr');
-            var rowsCount = rows.length;
-            var pageCount = Math.ceil(rowsCount / rowsPerPage);
-            var numbers = $('#pagination');
-
-            // ページネーションのリンクを生成
-            for (var i = 0; i < pageCount; i++) {
-                numbers.append('<a href="#" class="page-number">' + (i + 1) + '</a> ');
-            }
-
-            // 初期表示
-            rows.hide();
-            rows.slice(0, rowsPerPage).show();
-            $('#pagination a:first').addClass('active');
-
-            // ページネーションリンクのクリックイベント
-            $('#pagination').on('click', 'a', function(e) {
-                e.preventDefault();
-                $('#pagination a').removeClass('active');
-                $(this).addClass('active');
-                var page = $(this).text() - 1;
-                var start = page * rowsPerPage;
-                var end = start + rowsPerPage;
-                rows.hide();
-                rows.slice(start, end).show();
-            });
-
-            // 検索機能の実装
-            $('#search').on('keyup', function() {
-                var value = $(this).val().toLowerCase();
-                rows.hide();
-                var filteredRows = rows.filter(function() {
-                    return $(this).find('td:first').text().toLowerCase().indexOf(value) > -1;
-                });
-                var filteredCount = filteredRows.length;
-                var filteredPageCount = Math.ceil(filteredCount / rowsPerPage);
-
-                // ページネーションの更新
-                $('#pagination').empty();
-                for (var i = 0; i < filteredPageCount; i++) {
-                    $('#pagination').append('<a href="#" class="page-number">' + (i + 1) + '</a> ');
+        jQuery(function($){
+            $.extend( $.fn.dataTable.defaults, {
+                language: {
+                    url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
                 }
-                $('#pagination a:first').addClass('active');
-
-                // フィルタリングされた結果の表示
-                filteredRows.slice(0, rowsPerPage).show();
-
-                // ページネーションリンクのクリックイベントの再設定
-                $('#pagination').on('click', 'a', function(e) {
-                    e.preventDefault();
-                    $('#pagination a').removeClass('active');
-                    $(this).addClass('active');
-                    var page = $(this).text() - 1;
-                    var start = page * rowsPerPage;
-                    var end = start + rowsPerPage;
-                    filteredRows.hide();
-                    filteredRows.slice(start, end).show();
-                });
+            });
+            let table = new DataTable('#tbl-customer',{
+                "columnDefs": [
+                    {
+                        "targets":0,
+                        "width": "16rem"
+                    },
+                    {
+                        "targets":1,
+                        "width": "22rem"
+                    },
+                    {
+                        "targets":2,
+                        "width": "7.5rem"
+                    },
+                    {
+                        "targets":3,
+                        "width": "3rem"
+                    },
+                    {
+                        "targets":[5,6],
+                        "width": "4rem"
+                    },
+                    {
+                        "targets": [2, 3, 4,5,6],
+                        "searchable": false,
+                    },
+                    {
+                        "targets": [3, 4, 5, 6],
+                        "sortable": false,
+                    },
+                ],
+                "scrollX": true,
+                "order": [],
             });
         });
     </script>

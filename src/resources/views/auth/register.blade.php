@@ -7,7 +7,7 @@
             <div class="card pt-3 pb-3">
                 <div class="card-body">
                     <h2 class="card-title text-center text-primary mb-3">新規登録</h2>
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="row justify-content-center">
                         @error('name')
@@ -21,6 +21,11 @@
                         </div>
                         @enderror
                         @error('password')
+                        <div class="alert alert-danger col-md-10" role="alert">
+                            <span>{{ $message }}</span>
+                        </div>
+                        @enderror
+                        @error('avatar')
                         <div class="alert alert-danger col-md-10" role="alert">
                             <span>{{ $message }}</span>
                         </div>

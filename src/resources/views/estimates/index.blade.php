@@ -6,10 +6,18 @@
             <div class="d-grid gap-2 col-md-4 mb-4">
                 <a href="{{ url('/') }}" class="btn btn-primary btn-lg">新規作成</a>
             </div>
-            <div class="d-grid gap-2 col-md-4 offset-md-2 mb-4">
+            <div class="d-grid gap-2 col-md-4 mb-4">
+            <div class="btn-group">
+                <button class="btn btn-lg btn-info" data-filter="all">All</button>
+                <button class="btn btn-lg btn-info" data-filter=".issued">発行</button>
+                <button class="btn btn-lg btn-info" data-filter=".ordered">受注</button>
+                <button class="btn btn-lg btn-info" data-filter=".on_hold">保留</button>
+            </div>
+            </div>
+            <div class="d-grid gap-2 col-md-2 mb-4">
                 <div class="btn-group">
-                    <button class="btn btn-lg btn-secondary" data-filter="all">All</button>
-                    <button class="btn btn-lg btn-secondary" data-filter=".user{{ Auth::user()->id }}">自分</button>
+                    <button class="btn btn-lg btn-success" data-filter="all">All</button>
+                    <button class="btn btn-lg btn-success" data-filter=".user{{ Auth::user()->id }}">自分</button>
                 </div>
             </div>
             <div class="col-md-2 d-grid mb-4 justify-content-end">
@@ -21,7 +29,7 @@
         </div>
         <div class="estimate-list row">
         @foreach ($estimates as $estimate)
-            <div class="col-xl-6 mb-4 mix user{{ $estimate->user->id }}">
+            <div class="col-xl-6 mb-4 mix user{{ $estimate->user->id }}{{$estimate->issued?' issued':''}}{{$estimate->ordered?' ordered':''}}{{$estimate->on_hold?' on_hold':''}}">
             <div class="card">
                 <div class="card-body">
                     <a href="{{ route('estimate.show', $estimate->id) }}" class="btn-estimate">

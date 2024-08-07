@@ -15,6 +15,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+
+    <link rel="icon" href="{{asset('/img/logo-w.svg')}}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.6.1/htmx.min.js"></script>
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -25,8 +27,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'EstiMeister') }}
+                <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+                    <i style="width: 1.8rem" class="d-block me-2"><img src="{{asset('img/logo.svg')}}" alt="" class="img-fluid"></i>{{ config('app.name', 'EstiMeister') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"

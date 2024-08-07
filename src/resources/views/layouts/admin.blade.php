@@ -14,6 +14,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="//cdn.datatables.net/2.1.3/css/dataTables.dataTables.min.css">
+    <link rel="icon" href="{{asset('/img/logo-w.svg')}}">
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
@@ -60,7 +62,7 @@
         <div class="container-fluid h-100">
             <div class="row h-100">
                 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
-                    <h1 class="mt-3 text-center"><a href="{{ url('/') }}">EstiMeister</a></h1>
+                    <h1 class="mt-3 "><a href="{{ url('/') }}" class="d-flex align-items-center"><i style="display: block; width: 2rem;" class="me-2"><img src="{{asset('/img/logo-w.svg')}}" alt="" class="img-fluid"></i>EstiMeister</a></h1>
                     <div class="position-sticky pt-md-5">
                         <ul class="nav flex-column">
                             <li class="nav-item">

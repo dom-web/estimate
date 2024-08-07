@@ -4,25 +4,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                <div class="row">
-                    <div class="col-md-5 mb-4">
-                        <select id="category-filter" class="form-select">
-                            <option value="">すべてのカテゴリー</option>
-                            <option value="プロジェクト計画">プロジェクト計画</option>
-                            <option value="デザイン">デザイン</option>
-                            <option value="フロントエンド開発">フロントエンド開発</option>
-                            <option value="バックエンド開発">バックエンド開発</option>
-                            <option value="インフラストラクチャ">インフラストラクチャ</option>
-                            <option value="コンテンツ作成">コンテンツ作成</option>
-                            <option value="テスト">テスト</option>
-                            <option value="デプロイメント">デプロイメント</option>
-                            <option value="保守・運用">保守・運用</option>
-                            <option value="ドキュメント">ドキュメント</option>
-                        </select>
-                    </div>
-                    <div class="col-lg-1 col-md-2 offset-lg-6 offset-md-5 mb-4 text-end"><a href="{{ url('/admin/items/create') }}" class="btn btn-primary">＋</a></div>
+                <div class="row justify-content-end">
+                    <div class="col-lg-1 col-md-2 mb-4 text-end"><a href="{{ url('/admin/items/create') }}" class="btn btn-primary">＋</a></div>
                 </div>
-                <table class="table table-bordered" id="items-table">
+                <table class="table table-striped table-bordered" id="items-table">
                     <thead>
                         <tr class="text-center">
                             <th class="bg-gray">アイテム名</th>
@@ -110,23 +95,27 @@
 
 
 @section('scripts')
-    <!-- jQuery UIのCDNを追加 -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-
+    <script src="//cdn.datatables.net/2.1.3/js/dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
-            // カテゴリーでの絞り込み機能
-            $("#category-filter").change(function() {
-                var selectedCategory = $(this).val();
-                if (selectedCategory) {
-                    $("#items-table tbody tr").filter(function() {
-                        $(this).toggle($(this).find('td:nth-child(2)').text().trim() == selectedCategory);
-                    });
-                } else {
-                    $("#items-table tbody tr").show();
+        jQuery(function($){
+            $.extend( $.fn.dataTable.defaults, {
+                language: {
+                    url: "http://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Japanese.json"
                 }
+            });
+            let table = new DataTable('#items-table',{
+                "columnDefs": [
+                    {
+                    "targets": [2, 3, 4],
+                    "searchable": false,
+                    },
+                    {
+                    "targets": [3, 4],
+                    "sortable": false,
+                    },
+                ],
+                "order": [],
             });
         });
     </script>
