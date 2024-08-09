@@ -26,7 +26,7 @@ class EstimateController extends Controller
     public function index()
 {
     // 見積もりを取得
-    $estimates = Estimate::with('customer','user')->get();
+    $estimates = Estimate::with('customer','user')->orderby('created_at', 'desc')->get();
     $users = User::All();
 
     // 最新バージョンの見積もりアイテムを取得し、見積もりIDごとにグループ化

@@ -19,7 +19,7 @@ Route::post('/estimates', [EstimateController::class, 'store'])->name('estimate.
 Route::get('/estimates/{id}', [EstimateController::class, 'show'])->name('estimate.show');
 Route::get('/estimates/{id}/version/{version}', [EstimateController::class, 'show'])->name('estimate.show.version');
 Route::get('/estimates/{id}/edit', [EstimateController::class, 'edit'])->name('estimate.edit');
-Route::put('/estimates/{id}', [EstimateController::class, 'update'])->name('estimate.update');
+Route::put('/estimates/{id}/update', [EstimateController::class, 'update'])->name('estimate.update');
 Route::put('/estimates/{id}/status', [EstimateController::class, 'statusUpdate'])->name('estimate.status.update');
 Route::get('/estimate-list', [EstimateController::class, 'index'])->name('estimates.index');
 Route::delete('/estimates/{id}', [EstimateController::class, 'destroy'])->name('estimate.destroy');

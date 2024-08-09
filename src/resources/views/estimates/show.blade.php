@@ -3,7 +3,7 @@
     <div class="container-lg">
         <div class="d-md-flex justify-content-between align-items-start d-print-none mb-4">
             <div class="d-grid col-md-3 mb-3">
-                <form action="{{ route('estimate.status.update', $estimate->id) }}" method="POST" class="d-print-none">
+                <form hx-post="{{ route('estimate.status.update', $estimate->id) }}" method="POST" class="d-print-none">
                     @csrf
                     @method('PUT')
                     <div class="d-flex gap-4 mb-2">
