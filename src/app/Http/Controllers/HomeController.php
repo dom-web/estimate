@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Customer;
 
 class HomeController extends Controller
@@ -20,7 +19,7 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
 
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return View(見積作成画面)
      */
     public function index()
     {

@@ -1,9 +1,11 @@
 @extends('layouts.app')
 @section('content')
     <div class="container-lg">
+
         <div class="d-md-flex justify-content-between align-items-start d-print-none mb-4">
+
             <div class="d-grid col-md-3 mb-3">
-                <form hx-post="{{ route('estimate.status.update', $estimate->id) }}" method="POST" class="d-print-none">
+                <form action="{{ route('estimate.status.update', $estimate->id) }}" method="POST" class="d-print-none">
                     @csrf
                     @method('PUT')
                     <div class="d-flex gap-4 mb-2">
@@ -36,7 +38,8 @@
             </div>
             <div class="d-grid col-md-3">
                 <label for="invoice-date">支払期限(デフォルトは翌月末に設定)</label>
-                <input type="date" id="invoice-date" class="form-control mb-2" value="{{date('Y-m-d', strtotime('last day of next month'))}}">
+                <input type="date" id="invoice-date" class="form-control mb-2"
+                    value="{{ date('Y-m-d', strtotime('last day of next month')) }}">
                 <label for="payee">振込先</label>
                 <textarea id="payee" class="form-control mb-2">楽天銀行ダンス支店&#13;普通 0000000</textarea>
                 <button class="btn btn-success btn-lg" data-text="この見積で請求書を作る">この見積で請求書を作る</button>
@@ -45,9 +48,13 @@
         </div>
         <div class="card">
             <div class="card-body">
-                <div class="text-end date-today" data-text="{{ $items[0]->updated_at->format('Y年m月d日') }}">{{ $items[0]->updated_at->format('Y年m月d日') }}</div>
+                @if(isset($items[0]))
+                <div class="text-end date-today" data-text="{{ $items[0]->updated_at->format('Y年m月d日') }}">
+                    {{ $items[0]->updated_at->format('Y年m月d日') }}</div>
+                @endif
                 <div class="text-end">
-                    <span class="number">見積番号</span>：{{ sprintf('%03d', $customer->id) }}-{{ sprintf('%03d', $estimate->id) }}-{{ sprintf('%03d', $items[0]->version) }}
+                    <span
+                        class="number">見積番号</span>：{{ sprintf('%03d', $customer->id) }}-{{ sprintf('%03d', $estimate->id) }}-{{ sprintf('%03d', $items[0]->version) }}
                 </div>
 
                 <h1 class="text-center fw-bold my-3 hdg">見積書</h1>
@@ -56,7 +63,8 @@
                         <h3>{{ $customer->name }} <small>御中</small></h3>
                         <h4 class="fs-5 mb-3">{{ $estimate->person }} <small>様</small></h4>
                         <div>件名：{{ $estimate->name }}</div>
-                        <p class="invoice-date" data-text="有効期限：{{ $estimate->limit_date->format('Y年m月d日') }}">有効期限：{{ $estimate->limit_date->format('Y年m月d日') }}</p>
+                        <p class="invoice-date" data-text="有効期限：{{ $estimate->limit_date->format('Y年m月d日') }}">
+                            有効期限：{{ $estimate->limit_date->format('Y年m月d日') }}</p>
                         <p class="txt-price">下記のとおりお見積申し上げます。</p>
                         <div class="price d-flex justify-content-between align-items-baseline border-bottom">
                             <small class="ttl-price">お見積金額</small>
@@ -72,7 +80,7 @@
                     </div>
                 </div>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered table-estimate">
                         <thead>
                             <tr class="text-center">
                                 <th class="bg-gray">項目</th>
@@ -85,6 +93,7 @@
                             @php
                                 $all = 0;
                             @endphp
+                            @if($items)
                             @foreach ($items as $item)
                                 <tr>
                                     <td>{{ $item->item->name }}</td>
@@ -98,10 +107,12 @@
                                     $all += $total;
                                 @endphp
                             @endforeach
+                            @endif
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td rowspan="3" class="align-top"><small class="text-memo" data-text="{!! nl2br($estimate->memo) !!}">{!! nl2br($estimate->memo) !!}</small></td>
+                                <td rowspan="3" class="align-top"><small class="text-memo"
+                                        data-text="{!! nl2br($estimate->memo) !!}">{!! nl2br($estimate->memo) !!}</small></td>
                                 <td colspan="2" class="fw-bold text-center">小計</td>
                                 <td class="text-end">￥{{ number_format($all) }}</td>
                             </tr>
@@ -165,9 +176,10 @@
                 });
             });
         };
+
         function formatDate(dt) {
             var y = dt.getFullYear();
-            var m = ('00' + (dt.getMonth()+1)).slice(-2);
+            var m = ('00' + (dt.getMonth() + 1)).slice(-2);
             var d = ('00' + dt.getDate()).slice(-2);
             return (y + '年' + m + '月' + d + '日');
         }
@@ -195,6 +207,49 @@
                 $('.text-memo').html($('.text-memo').data('text'));
             });
 
+        });
+
+        window.addEventListener("load", () => {
+            // (PART A) GET TABLE ROWS, EXCLUDE HEADER ROW
+            var all = document.querySelectorAll(".table-estimate tbody tr");
+
+            // (PART B) "CURRENT ROW BEING DRAGGED"
+            var dragged;
+
+            // (PART C) DRAG-AND-DROP MECHANISM
+            for (let tr of all) {
+                // (C1) ROW IS DRAGGABLE
+                tr.draggable = true;
+
+                // (C2) ON DRAG START - SET "CURRENTLY DRAGGED" & DATA TRANSFER
+                tr.ondragstart = e => {
+                    dragged = tr;
+                    e.dataTransfer.dropEffect = "move";
+                    e.dataTransfer.effectAllowed = "move";
+                    e.dataTransfer.setData("text/html", tr.innerHTML);
+                };
+
+                // (C3) PREVENT DRAG OVER - NECESSARY FOR DROP TO WORK
+                tr.ondragover = e => e.preventDefault();
+
+                // (C4) ON DROP - "SWAP ROWS"
+                tr.ondrop = e => {
+                    e.preventDefault();
+                    if (dragged != tr) {
+                        dragged.innerHTML = tr.innerHTML;
+                        tr.innerHTML = e.dataTransfer.getData("text/html");
+                    }
+                };
+
+                // (C5) COSMETICS - HIGHLIGHT ROW "ON DRAG HOVER"
+                tr.ondragenter = () => tr.classList.add("hover");
+                tr.ondragleave = () => tr.classList.remove("hover");
+                tr.ondragend = () => {
+                    for (let r of all) {
+                        r.classList.remove("hover");
+                    }
+                };
+            }
         });
     </script>
 @endsection

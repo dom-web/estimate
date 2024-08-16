@@ -195,3 +195,11 @@ a.disable {
     cursor: default;
     opacity: 0.5;
 }
+
+.table-estimate tbody tr {
+    cursor: grab;
+
+    &.hover td {
+        background-color: #F0E17A;
+    }
+}

@@ -1,66 +1,49 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EstiMeister
+Web業界に特化した見積書作成アプリケーションです。
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## 見積作成
+見積を作成する際には、項目を「アイテム」として選択し、アイテムに単価、各種係数、工数を指定していくことで詳細な見積もりを作成することができるようになっています。
+また、各見積はバージョンを持っており、編集後も過去の見積を参照できます。（過去のバージョンの編集はできません）
+見積出力画面から、同内容で簡易な請求書を発行する機能もあります。
 
-## About Laravel
+## 管理画面
+指定された管理ユーザが入室できる管理画面を備えています。
+管理画面では、顧客情報、アイテム、ユーザの情報を管理できます。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### 初期値
+設定画面で、アイテムの初期値のセットができます。デフォルトの値を決めておくことで単価の管理が容易になります。
+アイテムにセットされている各値と、変更前の初期値が同じ場合、初期値を変更するとアイテムの値も変更されます。
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### アイテム
+アイテムには、名称、カテゴリと、単価決定のためのパラメータを登録します
+#### 難易度別単価
+低難易度～高難易度までの３段階で、１人日当たりの単価をセットします。
+- 定義: 各タスクの技術的な複雑さやスキルの要求度を評価する。
+- 段階例:
+  - 低 (Low): 基本的なスキルや一般的な知識で対応可能。
+  - 中 (Medium): 一般的な開発経験を持つ人が対応可能。
+  - 高 (High): 専門的な知識や高度なスキルを要する。
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### 精度
+低精度～高精度の３段階で、予備費を％でセットします。
+- 定義: 見積もりの確実性や信頼性の度合いを評価する。
+- 段階例:
+  - 低 (Low): 初期段階での見積もり。多くの不確定要素が存在。
+  - 中 (Medium): 要件がある程度明確になってきた段階。
+  - 高 (High): 要件が完全に明確で、詳細な設計が完了している。
 
-## Learning Laravel
+#### 期間
+短期間～長期間の３段階で、予備費を％でセットします。
+- 定義: 各タスクにかかる時間を評価する。
+- 段階例:
+  - 短期 (Short): 1日〜3日以内に完了する。
+  - 中期 (Medium): 4日〜10日以内に完了する。
+  - 長期 (Long): 11日以上かかる。
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+#### リスク
+低リスク～高リスクの３段階で、予備費を％でセットします。
+- 定義: 各タスクに伴うリスクの度合いを評価する。
+- 段階例:
+  - 低 (Low): リスクがほとんどない。
+  - 中 (Medium): 一定のリスクが存在。
+  - 高 (High): 高度なリスクが伴う。

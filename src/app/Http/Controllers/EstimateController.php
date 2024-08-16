@@ -9,6 +9,7 @@ use App\Models\Item;
 use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+
 class EstimateController extends Controller
 {
     /**
@@ -21,41 +22,45 @@ class EstimateController extends Controller
         $this->middleware('auth');
     }
     /**
-     * Display a listing of the resource.
+     * 見積一覧画面
+     * 一覧表示のために、見積情報と、items情報から合計金額を計算してセット。
+     *
+     * @return view
+     * @var $estimates 見積全件（customer,user,totalCost)
      */
     public function index()
-{
-    // 見積もりを取得
-    $estimates = Estimate::with('customer','user')->orderby('created_at', 'desc')->get();
-    $users = User::All();
+    {
+        // 見積もりを取得
+        $estimates = Estimate::with('customer', 'user')->orderby('created_at', 'desc')->get();
 
-    // 最新バージョンの見積もりアイテムを取得し、見積もりIDごとにグループ化
-    $latestEstimateItems = Estimate_item::select('estimate_id', 'diff', 'effort', 'acc', 'cost', 'risk','version')
-        ->whereIn('version', function($query) {
-            $query->selectRaw('MAX(version)')
-                ->from('estimate_items')
-                ->groupBy('estimate_id');
-        })
-        ->get()
-        ->groupBy('estimate_id');
 
-    // 各見積もりの合計金額を計算
-    $estimates = $estimates->map(function($estimate) use ($latestEstimateItems) {
-        $items = $latestEstimateItems->get($estimate->id, collect());
-        $totalCost = $items->sum(function($item) {
-            $baseCost = $item->diff * $item->effort;
-            $adjustedCost = $baseCost * ($item->acc / 100 + 1) * ($item->cost / 100 + 1) * ($item->risk / 100 + 1) * 1.1;
-            return $adjustedCost;
+        // 最新バージョンの見積もりアイテムを取得し、見積もりIDごとにグループ化
+        $latestEstimateItems = Estimate_item::select('estimate_id', 'diff', 'effort', 'acc', 'cost', 'risk', 'version')
+            ->whereIn('version', function ($query) {
+                $query->selectRaw('MAX(version)')
+                    ->from('estimate_items')
+                    ->groupBy('estimate_id');
+            })
+            ->get()
+            ->groupBy('estimate_id');
+
+        // 各見積もりの合計金額を計算
+        $estimates = $estimates->map(function ($estimate) use ($latestEstimateItems) {
+            $items = $latestEstimateItems->get($estimate->id, collect());
+            $totalCost = $items->sum(function ($item) {
+                $baseCost = $item->diff * $item->effort;
+                $adjustedCost = $baseCost * ($item->acc / 100 + 1) * ($item->cost / 100 + 1) * ($item->risk / 100 + 1) * 1.1;
+                return $adjustedCost;
+            });
+            $maxVersion = $items->max('version');
+            $estimate->item = $items;
+            $estimate->total_cost = $totalCost;
+            $estimate->max_version = $maxVersion;
+            return $estimate;
         });
-        $maxVersion = $items->max('version');
-        $estimate->item = $items;
-        $estimate->total_cost = $totalCost;
-        $estimate->max_version = $maxVersion;
-        return $estimate;
-    });
 
-    return view('estimates.index', compact('estimates','users'));
-}
+        return view('estimates.index', compact('estimates'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -71,7 +76,7 @@ class EstimateController extends Controller
      */
     public function store(Request $request)
     {
-        $items = $request->get('items',[]);
+        $items = $request->get('items', []);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'customer_id' => 'required|integer',
@@ -105,18 +110,22 @@ class EstimateController extends Controller
             'issued', 'ordered', 'on_hold'
         ]));
 
+        $createData = [];
         foreach ($request->items as $itemData) {
-            Estimate_item::create([
-                'estimate_id' => $estimate->id,
-                'version' => 1,
-                'item_id' => $itemData['item_id'],
-                'diff' => $itemData['diff'],
-                'acc' => $itemData['acc'],
-                'cost' => $itemData['cost'],
-                'risk' => $itemData['risk'],
-                'effort' => $itemData['effort'],
-            ]);
+                $createData[] = [
+                    'estimate_id' => $estimate->id,
+                    'version' => 1,
+                    'item_id' => $itemData['item_id'],  // 配列の場合はブラケット記法
+                    'diff' => $itemData['diff'],
+                    'acc' => $itemData['acc'],
+                    'cost' => $itemData['cost'],
+                    'risk' => $itemData['risk'],
+                    'effort' => $itemData['effort'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
         }
+        Estimate_item::insert($createData);
 
         return redirect()->route('estimate.show', $estimate->id);
     }
@@ -180,7 +189,7 @@ class EstimateController extends Controller
 
         return redirect()->route('estimate.show', $id);
     }
-/**
+    /**
      * Display the specified resource.
      */
     public function show(string $id, ?int $version = null)
@@ -224,22 +233,55 @@ class EstimateController extends Controller
 
     public function charts()
     {
-    // 月ごとの受注数
-    $monthlyOrders = Estimate::selectRaw('YEAR(issue_date) as year, MONTH(issue_date) as month, COUNT(*) as count')
-        ->groupBy('year', 'month')
-        ->get();
+        $items = Item::all();
+        // 月ごとの受注数
+        $monthlyOrders = Estimate::selectRaw('YEAR(issue_date) as year, MONTH(issue_date) as month, COUNT(*) as count')
+            ->groupBy('year', 'month')
+            ->get();
 
-    // ステータスの分布
-    $statusDistribution = Estimate::selectRaw('issued, ordered, on_hold, COUNT(*) as count')
-        ->groupBy('issued', 'ordered', 'on_hold')
-        ->get();
+        // ステータスの分布
+        $statusDistribution = Estimate::selectRaw('issued, ordered, on_hold, COUNT(*) as count')
+            ->groupBy('issued', 'ordered', 'on_hold')
+            ->get();
 
-    // ユーザごとの受注率
-    $userOrderRates = User::withCount('estimates')->get();
+        // ユーザごとの受注率
+        $userOrderRates = User::withCount('estimates')->get();
 
-    // 顧客ごとの受注データ
-    $customerOrderData = Customer::withCount('estimates')->get();
+        // 顧客ごとの受注データ
+        $customerOrderData = Customer::withCount('estimates')->get();
 
-    return view('estimates.charts', compact('monthlyOrders', 'statusDistribution', 'userOrderRates', 'customerOrderData'));
-}
+        return view('estimates.charts', compact('monthlyOrders', 'statusDistribution', 'userOrderRates', 'customerOrderData','items'));
+    }
+
+    public function getItemUsageRates(Request $request)
+    {
+        $itemId = $request->input('item_id');
+
+        // 最新バージョンのestimate_itemsを取得
+        $latestItem = Estimate_item::where('item_id', $itemId)
+            ->orderBy('version', 'desc')
+            ->first();
+
+        if (!$latestItem) {
+            return response()->json(['error' => 'Item not found'], 404);
+        }
+
+        // 使用率のデータを取得
+        $usageRates = [
+            'diff_low' => $latestItem->diff_low,
+            'diff_mid' => $latestItem->diff_mid,
+            'diff_high' => $latestItem->diff_high,
+            'acc_low' => $latestItem->acc_low,
+            'acc_mid' => $latestItem->acc_mid,
+            'acc_high' => $latestItem->acc_high,
+            'cost_low' => $latestItem->cost_low,
+            'cost_mid' => $latestItem->cost_mid,
+            'cost_high' => $latestItem->cost_high,
+            'risk_low' => $latestItem->risk_low,
+            'risk_mid' => $latestItem->risk_mid,
+            'risk_high' => $latestItem->risk_high,
+        ];
+
+        return response()->json($usageRates);
+    }
 }
