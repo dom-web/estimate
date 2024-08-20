@@ -110,7 +110,7 @@
                 box.dataset.index = idx;
                 //box.querySelector('.item-number').textContent = idx;
 
-                const inputs = box.querySelectorAll('.item-input, .item-select');
+                const inputs = box.querySelectorAll('.item-input');
                 inputs.forEach(input => {
                     const name = input.dataset.name || input.name;
                     input.name = `items[${idx}][${name}]`;

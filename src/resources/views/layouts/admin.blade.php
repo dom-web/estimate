@@ -96,6 +96,11 @@
                                     <li><a href="{{ url('/admin/users') }}" class="nav-sub">ユーザ一覧</a></li>
                                 </ul>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url('/admin/charts') }}">
+                                    <span class="ml-2">営業データ</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </nav>

@@ -1,18 +1,39 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
 <div class="container">
-    <h1>営業データ</h1>
+    <h1 class="text-primary fw-bold mb-4">営業データ</h1>
     <div class="row">
-        <div class="col-md-12"><canvas id="monthlyOrdersChart"></canvas></div>
-        <div class="col-md-6"><canvas id="statusDistributionChart"></canvas></div>
-        <div class="col-md-6"><canvas id="userOrderRatesChart"></canvas></div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body"><canvas id="monthlyOrdersChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="userOrderRatesChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <canvas id="statusDistributionChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+        <canvas id="customerOrderDataChart"></canvas>
+        </div>
     </div>
 </div>
 
 
 
-    <canvas id="customerOrderDataChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -46,7 +67,7 @@
 
         // ステータスの分布データ
         const statusDistributionData = @json($statusDistribution);
-        const statusDistributionLabels = ['Issued', 'Ordered', 'On Hold'];
+        const statusDistributionLabels = ['発行済', '受注済', '保留中'];
         const statusDistributionCounts = [
             statusDistributionData.reduce((acc, data) => acc + (data.issued ? data.count : 0), 0),
             statusDistributionData.reduce((acc, data) => acc + (data.ordered ? data.count : 0), 0),

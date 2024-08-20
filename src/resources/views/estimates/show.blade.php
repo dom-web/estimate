@@ -42,7 +42,7 @@
                     value="{{ date('Y-m-d', strtotime('last day of next month')) }}">
                 <label for="payee">振込先</label>
                 <textarea id="payee" class="form-control mb-2">楽天銀行ダンス支店&#13;普通 0000000</textarea>
-                <button class="btn btn-success btn-lg" data-text="この見積で請求書を作る">この見積で請求書を作る</button>
+                <button class="btn btn-success btn-lg button-invoice" data-text="この見積で請求書を作る">この見積で請求書を作る</button>
             </div>
 
         </div>
@@ -184,7 +184,7 @@
             return (y + '年' + m + '月' + d + '日');
         }
         $(function() {
-            $('button').clickToggle(function() {
+            $('.button-invoice').clickToggle(function() {
                 // １回目のクリック
                 $(this).text('見積書にもどす');
                 $('.date-today').text(formatDate(new Date()));
