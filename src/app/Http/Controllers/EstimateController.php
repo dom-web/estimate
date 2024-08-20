@@ -252,36 +252,4 @@ class EstimateController extends Controller
 
         return view('estimates.charts', compact('monthlyOrders', 'statusDistribution', 'userOrderRates', 'customerOrderData','items'));
     }
-
-    public function getItemUsageRates(Request $request)
-    {
-        $itemId = $request->input('item_id');
-
-        // 最新バージョンのestimate_itemsを取得
-        $latestItem = Estimate_item::where('item_id', $itemId)
-            ->orderBy('version', 'desc')
-            ->first();
-
-        if (!$latestItem) {
-            return response()->json(['error' => 'Item not found'], 404);
-        }
-
-        // 使用率のデータを取得
-        $usageRates = [
-            'diff_low' => $latestItem->diff_low,
-            'diff_mid' => $latestItem->diff_mid,
-            'diff_high' => $latestItem->diff_high,
-            'acc_low' => $latestItem->acc_low,
-            'acc_mid' => $latestItem->acc_mid,
-            'acc_high' => $latestItem->acc_high,
-            'cost_low' => $latestItem->cost_low,
-            'cost_mid' => $latestItem->cost_mid,
-            'cost_high' => $latestItem->cost_high,
-            'risk_low' => $latestItem->risk_low,
-            'risk_mid' => $latestItem->risk_mid,
-            'risk_high' => $latestItem->risk_high,
-        ];
-
-        return response()->json($usageRates);
-    }
 }

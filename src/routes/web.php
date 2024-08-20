@@ -11,7 +11,7 @@ Auth::routes();
 
 Route::get('/item-box', [ItemController::class, 'getItemBox'])->name('item.box');
 Route::get('/item-get', [ItemController::class, 'show'])->name('item.get');
-Route::get('/items-select', [ItemController::class, 'select'])->('item.select');
+Route::get('/items-select', [ItemController::class, 'select'])->name('item.select');
 
 Route::get('/', [EstimateController::class, 'create'])->name('estimate.create');
 Route::post('/estimates', [EstimateController::class, 'store'])->name('estimate.store');
@@ -22,7 +22,6 @@ Route::put('/estimates/{id}/status', [EstimateController::class, 'statusUpdate']
 Route::get('/estimate-list', [EstimateController::class, 'index'])->name('estimates.index');
 Route::delete('/estimates/{id}', [EstimateController::class, 'destroy'])->name('estimate.destroy');
 Route::get('/estimates/{id}', [EstimateController::class, 'show'])->name('estimate.show');
-Route::get('/estimates/item-usage-rates', [EstimateController::class, 'getItemUsageRates'])->name('estimates.itemUsageRates');
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin.access']], function () {
     Route::get('/', [AdminController::class, 'index'])->name('admin.dashboard');
