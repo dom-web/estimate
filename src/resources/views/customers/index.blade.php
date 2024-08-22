@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10">
-                <h1 class="mb-4">顧客一覧</h1>
+                <h2 class="fw-bold text-primary mb-4">顧客一覧</h2>
+
                 <div class="row mb-4 justify-content-end">
                     <div class="col-lg-1 col-md-2 text-end"><a href="{{ route('customers.create') }}" class="btn btn-primary mb-3">＋</a></div>
 

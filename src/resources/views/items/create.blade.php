@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-
+                <h2 class="fw-bold text-primary mb-4">アイテム追加</h2>
                 <form method="POST" action="{{ route('items.store') }}">
                     @csrf
                     <div class="row align-items-center mb-4">

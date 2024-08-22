@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10">
-                <h1 class="mb-4">ユーザ一覧</h1>
+                <h2 class="fw-bold text-primary mb-4">ユーザ一覧</h2>
                 <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>

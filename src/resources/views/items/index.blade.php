@@ -4,6 +4,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
+                <h2 class="fw-bold text-primary mb-4">アイテム一覧</h2>
+                <p class="lead mb-4">見積作成用の項目（アイテム）の一覧です。
+                </p>
                 <div class="row justify-content-end">
                     <div class="col-lg-1 col-md-2 mb-4 text-end"><a href="{{ url('/admin/items/create') }}" class="btn btn-primary">＋</a></div>
                 </div>

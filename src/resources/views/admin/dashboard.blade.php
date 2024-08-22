@@ -4,7 +4,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10">
-
+                <h2 class="fw-bold text-primary mb-4">初期値設定</h2>
+                <p class="lead mb-4">アイテム作成時の各種単価、予備費の初期値を設定します。
+                </p>
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -141,7 +143,7 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary btn-lg">
                             {{ isset($defaults) ? __('設定保存') : __('Create Defaults') }}
                         </button>
                     </div>

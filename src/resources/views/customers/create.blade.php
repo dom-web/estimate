@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-10">
-                <h1 class="mb-4">顧客新規追加</h1>
+                <h2 class="fw-bold text-primary mb-4">顧客新規追加</h2>
                 <form method="POST" action="{{ route('customers.store') }}">
                     @csrf
                     <div class="form-group row mb-3">

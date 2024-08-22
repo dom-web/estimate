@@ -64,40 +64,43 @@
                 <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
                     <h1 class="mt-3 "><a href="{{ url('/') }}" class="d-flex align-items-center"><i style="display: block; width: 2rem;" class="me-2"><img src="{{asset('/img/logo-w.svg')}}" alt="" class="img-fluid"></i>EstiMeister</a></h1>
                     <div class="position-sticky pt-md-5">
+                        @php
+                        $routeName = Route::currentRouteName();
+                        @endphp
                         <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link active" aria-current="page" href="{{ url('/admin/') }}">
-                                    <span class="ml-2">設定</span>
+                            <li class="nav-item mb-2">
+                                <a class="nav-link{{$routeName==='admin.dashboard'?' active' : ''}}" aria-current="page" href="{{ url('/admin/') }}">
+                                    <span class="ml-2">初期値設定</span>
                                 </a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mb-2">
                                 <a class="nav-link" href="{{ url('/admin/customers') }}">
                                     <span class="ml-2">顧客管理</span>
                                 </a>
                                 <ul class="ps-3">
-                                    <li><a href="{{ url('/admin/customers') }}" class="nav-sub">顧客一覧</a></li>
-                                    <li><a href="{{ url('/admin/customers/create') }}" class="nav-sub">顧客追加</a></li>
+                                    <li><a href="{{ url('/admin/customers') }}" class="nav-sub{{$routeName==='customers.index'?' active' : ''}}">顧客一覧</a></li>
+                                    <li><a href="{{ url('/admin/customers/create') }}" class="nav-sub{{$routeName==='customers.create'?' active' : ''}}">顧客追加</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mb-2">
                                 <a class="nav-link" href="{{ url('/admin/items') }}">
                                     <span class="ml-2">アイテム管理</span>
                                 </a>
                                 <ul class="ps-3">
-                                    <li><a href="{{ url('/admin/items') }}" class="nav-sub">アイテム一覧</a></li>
-                                    <li><a href="{{ url('/admin/items/create') }}" class="nav-sub">アイテム追加</a></li>
+                                    <li><a href="{{ url('/admin/items') }}" class="nav-sub{{$routeName==='items.index'?' active' : ''}}">アイテム一覧</a></li>
+                                    <li><a href="{{ url('/admin/items/create') }}" class="nav-sub{{$routeName==='items.create'?' active' : ''}}">アイテム追加</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item mb-2">
                                 <a class="nav-link" href="{{ url('/admin/users') }}">
                                     <span class="ml-2">ユーザ管理</span>
                                 </a>
                                 <ul class="ps-3">
-                                    <li><a href="{{ url('/admin/users') }}" class="nav-sub">ユーザ一覧</a></li>
+                                    <li><a href="{{ url('/admin/users') }}" class="nav-sub{{$routeName==='users.index'?' active' : ''}}">ユーザ一覧</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/admin/charts') }}">
+                            <li class="nav-item mb-2">
+                                <a class="nav-link{{$routeName==='estimates.charts'?' active' : ''}}" href="{{ url('/admin/charts') }}">
                                     <span class="ml-2">営業データ</span>
                                 </a>
                             </li>
