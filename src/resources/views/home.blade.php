@@ -23,7 +23,6 @@
                                     <option value="{{ $customer->id }}" {{ old('customer_id') === $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
                                 @endforeach
                             </select>
-
                         </div>
                         <label for="person" class="col-md-2">部署／担当者</label>
                         <div class="col-md-4">
@@ -78,7 +77,7 @@
                         </div>
                     </div>
                     <input type="hidden" id="user_id" name="user_id" required value="{{ Auth::user()->id }}">
-                    <div class="text-center mt-5"><button type="submit" class="btn btn-primary btn-lg">確定</button></div>
+                    <div class="text-center mt-5"><button type="submit" class="btn btn-primary btn-lg">見積書を作成する</button></div>
                 </form>
             </div>
         </div>
@@ -108,13 +107,10 @@
             const itemBoxes = document.querySelectorAll('.item-box');
             itemBoxes.forEach((box, idx) => {
                 box.dataset.index = idx;
-                //box.querySelector('.item-number').textContent = idx;
-
                 const inputs = box.querySelectorAll('.item-input');
                 inputs.forEach(input => {
                     const name = input.dataset.name || input.name;
                     input.name = `items[${idx}][${name}]`;
-                    //input.dataset.index = idx;
                 });
             });
             itemCount = itemBoxes.length;
