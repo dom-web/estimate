@@ -9,6 +9,7 @@
                     @endforeach
                 </select>
             </div>
+            <button class="remove-button btn-close" aria-label="Close"></button>
         </div>
     </div>
 </div>

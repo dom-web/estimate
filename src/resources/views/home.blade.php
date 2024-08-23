@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .item-box.htmx-added {
+        opacity: 0;
+        transform: translateX(-2rem);
+    }
+    .item-box {
+        opacity: 1;
+        transform: translateX(0);
+        transition: 0.2s ease-out;
+    }
+</style>
     <div class="container h-100">
         <div class="row justify-content-center">
             <div class="col-md-10">
@@ -48,7 +59,7 @@
                     <div id="items-container"></div>
                     <div class="text-center my-4">
                         <button type="button" id="add-item" hx-get="/item-box" hx-trigger="click"
-                            hx-target="#items-container" hx-swap="beforeend" class="btn btn-sm btn-secondary">
+                            hx-target="#items-container" hx-swap="beforeend settle:0.1s" class="btn btn-sm btn-secondary">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-plus" viewBox="0 0 16 16">
                                 <path

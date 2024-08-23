@@ -40,7 +40,7 @@
                     <div class="form-group row mb-5">
                         <label for="memo" class="col-2">メモ</label>
                         <div class="col-10">
-                        <textarea class="form-control" id="memo" name="memo"></textarea>
+                        <textarea class="form-control" id="memo" name="memo" rows="4"></textarea>
                         </div>
                     </div>
                     <div class="text-center"><button type="submit" class="btn btn-primary btn-lg">追加</button></div>
