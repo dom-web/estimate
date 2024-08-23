@@ -61,7 +61,7 @@
                         <div class="card-body">
                             <div class="mb-5">
                                 <label for="memo" class="mb-2">備考・メモ</label>
-                                <textarea id="memo" name="memo" class="form-control" required>{{old('memo')}}</textarea>
+                                <textarea id="memo" name="memo" class="form-control" rows="4" required>{{old('memo')}}</textarea>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <div id="summary" class="col-4">
@@ -70,14 +70,17 @@
                                     <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><small
                                             class="fs-5">消費税</small><span id="tax" class="fs-5">0円</span></div>
                                     <div class="d-flex justify-content-between"><small class="fs-4 fw-bold">合計</small><span
-                                            id="total" class="fw-bold fs-4">0円</span></div>
+                                            id="total" class="fw-bold fs-3">0円</span></div>
                                 </div>
                             </div>
 
                         </div>
                     </div>
                     <input type="hidden" id="user_id" name="user_id" required value="{{ Auth::user()->id }}">
-                    <div class="text-center mt-5"><button type="submit" class="btn btn-primary btn-lg">見積書を作成する</button></div>
+                    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+
+                    <div class="text-center mt-5"><button type="submit" class="btn"><dotlottie-player src="https://lottie.host/beeaad8e-e777-4082-bb33-842cd2ed05fd/qHTRXYk7E8.json" background="transparent" speed="1" style="width: 300px; height: 47px;" hover></dotlottie-player></button></div>
                 </form>
             </div>
         </div>
