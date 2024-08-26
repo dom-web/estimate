@@ -1,22 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-<style>
-    .item-box.htmx-added {
-        opacity: 0;
-        transform: translateX(-2rem);
-    }
-    .item-box {
-        opacity: 1;
-        transform: translateX(0);
-        transition: 0.2s ease-out;
-    }
-</style>
+    <style>
+        .item-box.htmx-added {
+            opacity: 0;
+            transform: translateX(-2rem);
+        }
+
+        .item-box {
+            opacity: 1;
+            transform: translateX(0);
+            transition: 0.2s ease-out;
+        }
+
+    </style>
     <div class="container h-100">
         <div class="row justify-content-center">
             <div class="col-md-10">
-                @if(session('error'))
-                <div class="alert alert-danger">{{session('error')}}</div>
+                @if (session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
                 @endif
                 <div class="d-grid gap-2 col-4 mb-4">
                     <a href="{{ url('/estimate-list') }}" class="btn btn-primary btn-lg">見積一覧</a>
@@ -31,27 +33,31 @@
                         <div class="col-md-4">
                             <select name="customer_id" id="customer_id" class="form-select">
                                 @foreach ($customers as $customer)
-                                    <option value="{{ $customer->id }}" {{ old('customer_id') === $customer->id ? 'selected' : '' }}>{{ $customer->name }}</option>
+                                    <option value="{{ $customer->id }}"
+                                        {{ old('customer_id') === $customer->id ? 'selected' : '' }}>{{ $customer->name }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                         <label for="person" class="col-md-2">部署／担当者</label>
                         <div class="col-md-4">
-                            <input type="text" id="person" name="person" class="form-control" required value="{{ old('person') }}">
+                            <input type="text" id="person" name="person" class="form-control" required
+                                value="{{ old('person') }}">
 
                         </div>
                     </div>
                     <div class="row align-items-center mb-4">
                         <label for="issue_date" class="col-md-2">発行日</label>
                         <div class="col-md-4"><input type="date" id="issue_date" name="issue_date" class="form-control"
-                                required value="{{old('issue_date', date('Y-m-d'))}}"></div>
+                                required value="{{ old('issue_date', date('Y-m-d')) }}"></div>
                         <label for="limit_date" class="col-md-2">有効期限</label>
                         <div class="col-md-4"><input type="date" id="limit_date" name="limit_date" class="form-control"
-                                required value="{{old('limit_date',date('Y-m-d', strtotime('+30 day')))}}"></div>
+                                required value="{{ old('limit_date', date('Y-m-d', strtotime('+30 day'))) }}"></div>
                     </div>
                     <div class="row align-items-center">
                         <label for="name" class="col-2">件名</label>
-                        <div class="col-10"><input type="text" class="form-control" id="name" name="name" required value="{{old('name')}}"></div>
+                        <div class="col-10"><input type="text" class="form-control" id="name" name="name"
+                                required value="{{ old('name') }}"></div>
                     </div>
                     @if ($errors->has('items'))
                         <div class="alert alert-danger mt-4">{{ $errors->first('items') }}</div>
@@ -72,7 +78,7 @@
                         <div class="card-body">
                             <div class="mb-5">
                                 <label for="memo" class="mb-2">備考・メモ</label>
-                                <textarea id="memo" name="memo" class="form-control" rows="4" required>{{old('memo')}}</textarea>
+                                <textarea id="memo" name="memo" class="form-control" rows="4" required>{{ old('memo') }}</textarea>
                             </div>
                             <div class="d-flex justify-content-end">
                                 <div id="summary" class="col-4">
@@ -80,8 +86,7 @@
                                             id="subtotal" class="fs-5">0円</span></div>
                                     <div class="d-flex justify-content-between border-bottom pb-2 mb-2"><small
                                             class="fs-5">消費税</small><span id="tax" class="fs-5">0円</span></div>
-                                    <div class="d-flex justify-content-between"><small class="fs-4 fw-bold">合計</small><span
-                                            id="total" class="fw-bold fs-3">0円</span></div>
+                                    <div class="d-flex justify-content-between"><small class="fs-4 fw-bold">合計</small><span class="fw-bold fs-3"><span id="total">0</span>円</span></div>
                                 </div>
                             </div>
 
@@ -91,7 +96,10 @@
                     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
 
 
-                    <div class="text-center mt-5"><button type="submit" class="btn"><dotlottie-player src="https://lottie.host/beeaad8e-e777-4082-bb33-842cd2ed05fd/qHTRXYk7E8.json" background="transparent" speed="1" style="width: 300px; height: 47px;" hover></dotlottie-player></button></div>
+                    <div class="text-center mt-5"><button type="submit" class="btn"><dotlottie-player
+                                src="https://lottie.host/beeaad8e-e777-4082-bb33-842cd2ed05fd/qHTRXYk7E8.json"
+                                background="transparent" speed="1" style="width: 300px; height: 47px;"
+                                hover></dotlottie-player></button></div>
                 </form>
             </div>
         </div>
@@ -162,11 +170,18 @@
                 });
 
                 var tax = Math.ceil(subtotal * 0.1); // 消費税は10%
-                var total = subtotal + tax;
-
+                var total = Number(subtotal + tax);
+                if(isNaN(total)){
+                    total = 0;
+                }
+                var tNum = Number($("#total").text().replace(/,/, ''));
+                if(isNaN(tNum)){
+                    tNum = 0;
+                }
                 $('#subtotal').text(subtotal.toLocaleString() + '円');
                 $('#tax').text(tax.toLocaleString() + '円');
-                $('#total').text(total.toLocaleString() + '円');
+                $('#total').text(total.toLocaleString());
+                //animateValue("total", tNum, total, 1500);
             }
 
             function addEventListeners(item) {
@@ -181,6 +196,27 @@
                     updateOverallTotal();
                 });
             }
+
+            function animateValue(id, start, end, duration) {
+                const obj = document.getElementById(id);
+                const range = Math.abs(end - start);
+                const stepTime = Math.max(Math.floor(duration / range), 20); // ステップ時間は最低でも20ms
+                const stepSize = Math.ceil(range / (duration / stepTime)); // ステップごとの増減幅
+                let current = start;
+
+                const timer = setInterval(function() {
+                    if (start < end) {
+                        current = Math.min(current + stepSize, end); // カウントアップ
+                    } else {
+                        current = Math.max(current - stepSize, end); // カウントダウン
+                    }
+                    obj.textContent = current.toLocaleString(); // 数字をフォーマット
+                    if (current == end) {
+                        clearInterval(timer);
+                    }
+                }, stepTime);
+            }
+
 
             // 初期アイテムにイベントリスナーを追加
             $('#item-container').find('.item-box').each(function() {

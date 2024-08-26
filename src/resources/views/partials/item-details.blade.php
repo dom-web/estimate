@@ -1,7 +1,7 @@
 <input type="hidden" class="item-input" data-name="item_id" value="{{ $selected->id }}">
 <div class="row align-items-center mb-4">
     <h5 class="col-md-7 mb-0">{{ $selected->name }}</h5>
-    <div class="col-md-2"><input type="number" class="item-input form-control" data-name="effort" value="0"></div>
+    <div class="col-md-2"><input type="number" min="0" class="item-input form-control" data-name="effort" value="0"></div>
     <div class="col-md-3 fs-3 fw-bold text-end">￥<span class="item_total">0</span></div>
 </div>
 <div class="row">
