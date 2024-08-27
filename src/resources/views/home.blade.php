@@ -31,7 +31,7 @@
                     <div class="row align-items-center mb-4">
                         <label for="customer_id" class="col-md-2">お客様</label>
                         <div class="col-md-4">
-                            <select name="customer_id" id="customer_id" class="form-select">
+                            <select name="customer_id" id="customer_id" class="form-select form-select-lg">
                                 @foreach ($customers as $customer)
                                     <option value="{{ $customer->id }}"
                                         {{ old('customer_id') === $customer->id ? 'selected' : '' }}>{{ $customer->name }}
@@ -41,22 +41,22 @@
                         </div>
                         <label for="person" class="col-md-2">部署／担当者</label>
                         <div class="col-md-4">
-                            <input type="text" id="person" name="person" class="form-control" required
+                            <input type="text" id="person" name="person" class="form-control form-control-lg" required
                                 value="{{ old('person') }}">
 
                         </div>
                     </div>
                     <div class="row align-items-center mb-4">
                         <label for="issue_date" class="col-md-2">発行日</label>
-                        <div class="col-md-4"><input type="date" id="issue_date" name="issue_date" class="form-control"
+                        <div class="col-md-4"><input type="date" id="issue_date" name="issue_date" class="form-control form-control-lg"
                                 required value="{{ old('issue_date', date('Y-m-d')) }}"></div>
                         <label for="limit_date" class="col-md-2">有効期限</label>
-                        <div class="col-md-4"><input type="date" id="limit_date" name="limit_date" class="form-control"
+                        <div class="col-md-4"><input type="date" id="limit_date" name="limit_date" class="form-control form-control-lg"
                                 required value="{{ old('limit_date', date('Y-m-d', strtotime('+30 day'))) }}"></div>
                     </div>
                     <div class="row align-items-center">
                         <label for="name" class="col-2">件名</label>
-                        <div class="col-10"><input type="text" class="form-control" id="name" name="name"
+                        <div class="col-10"><input type="text" class="form-control form-control-lg" id="name" name="name"
                                 required value="{{ old('name') }}"></div>
                     </div>
                     @if ($errors->has('items'))

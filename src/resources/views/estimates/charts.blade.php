@@ -33,14 +33,13 @@
 </div>
 
 
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // 月ごとの受注数データ
-        const monthlyOrdersData = @json($monthlyOrders);
+        const monthlyOrdersData = @js($monthlyOrders);
         const monthlyOrdersLabels = monthlyOrdersData.map(data => `${data.year}-${data.month}`);
         const monthlyOrdersCounts = monthlyOrdersData.map(data => data.count);
 
@@ -66,7 +65,7 @@
         });
 
         // ステータスの分布データ
-        const statusDistributionData = @json($statusDistribution);
+        const statusDistributionData = @js($statusDistribution);
         const statusDistributionLabels = ['発行済', '受注済', '保留中'];
         const statusDistributionCounts = [
             statusDistributionData.reduce((acc, data) => acc + (data.issued ? data.count : 0), 0),
@@ -92,7 +91,7 @@
         });
 
         // ユーザごとの受注率データ
-        const userOrderRatesData = @json($userOrderRates);
+        const userOrderRatesData = @js($userOrderRates);
         const userOrderRatesLabels = userOrderRatesData.map(user => user.name);
         const userOrderRatesCounts = userOrderRatesData.map(user => user.estimates_count);
 
@@ -118,7 +117,7 @@
         });
 
         // 顧客ごとの受注データ
-        const customerOrderData = @json($customerOrderData);
+        const customerOrderData = @js($customerOrderData);
         const customerOrderLabels = customerOrderData.map(customer => customer.name);
         const customerOrderCounts = customerOrderData.map(customer => customer.estimates_count);
 

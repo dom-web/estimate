@@ -47,3 +47,46 @@ Web業界に特化した見積書作成アプリケーションです。
   - 低 (Low): リスクがほとんどない。
   - 中 (Medium): 一定のリスクが存在。
   - 高 (High): 高度なリスクが伴う。
+
+## Macで環境構築
+### VS Codeでクローン
+VS Codeを開きます。
+ソース管理を開き、「リポジトリのクローン」をクリックします。
+
+### Composerのパッケージのインストール
+```
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
+
+次に、「.env.example」ファイルを参考に、.envファイルを作成します。
+
+DB_HOSTを変更しましょう。コンテナ内のMySQLに接続するために以下のように変更します。
+```
+DB_HOST=127.0.0.1
+↓
+DB_HOST=mysql
+```
+
+Sailをバッググランドで起動します。
+```
+./vendor/bin/sail up -d
+```
+
+以下のコマンドでAPP_KEYを更新します。
+```
+sail php artisan key:generate
+```
+
+以下のコマンドでテーブルを作成しましょう。
+```
+sail php artisan migrate
+```
+
+```
+sail npm install
+```

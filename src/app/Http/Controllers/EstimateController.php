@@ -35,7 +35,15 @@ class EstimateController extends Controller
 
 
         // 最新バージョンの見積もりアイテムを取得し、見積もりIDごとにグループ化
-        $latestEstimateItems = Estimate_item::select('estimate_id', 'diff', 'effort', 'acc', 'cost', 'risk', 'version')
+        $latestEstimateItems = Estimate_item::select(
+            'estimate_id',
+            'diff',
+            'effort',
+            'acc',
+            'cost',
+            'risk',
+            'version'
+            )
             ->whereIn('version', function ($query) {
                 $query->selectRaw('MAX(version)')
                     ->from('estimate_items')
@@ -53,7 +61,7 @@ class EstimateController extends Controller
                 return $adjustedCost;
             });
             $maxVersion = $items->max('version');
-            $estimate->item = $items;
+            //$estimate->item = $items;
             $estimate->total_cost = $totalCost;
             $estimate->max_version = $maxVersion;
             return $estimate;
